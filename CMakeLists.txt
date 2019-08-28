@@ -5,9 +5,16 @@ project(roboteam_proto)
 set(CMAKE_CXX_FLAGS_DEBUG "-std=c++17 ${CMAKE_CXX_FLAGS} -O1")
 set(CMAKE_CXX_FLAGS_RELEASE "-std=c++17 ${CMAKE_CXX_FLAGS} -Werror -O1")
 
+SET(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")
+
 
 # find the protobuf compiler and libraries
 find_package(Protobuf REQUIRED)
+find_package(zeroMQ REQUIRED)
+find_package(zmqpp REQUIRED)
+
+# for zmq to work on mac
+set(ENABLE_DRAFTS OFF)
 
 # check if protobuf was found
 if(PROTOBUF_FOUND)
@@ -43,12 +50,6 @@ PROTOBUF_GENERATE_CPP(PROTO_SRCS PROTO_HDRS
         proto/grSim_Packet.proto
         proto/grSim_Replacement.proto
 
-        #world
-        proto/DetectionFrame.proto
-        proto/DetectionBall.proto
-        proto/DetectionRobot.proto
-
-
         # ssl input packets
         proto/messages_robocup_ssl_detection.proto
         proto/messages_robocup_ssl_game_event.proto
@@ -65,9 +66,10 @@ message ("PROTO_HDRS = ${PROTO_HDRS}")
 
 # Add an executable
 add_library(roboteam_proto STATIC
-        main.cpp
         ${PROTO_SRCS}
-        ${PROTO_HDRS})
+        ${PROTO_HDRS}
+        src/Subscriber.cpp
+        src/Publisher.cpp)
 
 target_include_directories(roboteam_proto
         PUBLIC
@@ -79,4 +81,11 @@ target_include_directories(roboteam_proto
 target_link_libraries(roboteam_proto
         PUBLIC
         ${PROTOBUF_LIBRARIES}
+        ${ZeroMQ_LIBRARIES}
+        ${ZMQPP_LIBRARIES}
         )
+
+target_include_directories(roboteam_proto PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>
+        PRIVATE src )
