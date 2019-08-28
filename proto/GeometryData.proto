@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+import "GeometryFieldSize.proto";
+import "GeometryCameraCalibration.proto";
+
+package roboteam_proto;
+
+message GeometryData {
+    GeometryFieldSize field = 1;
+    repeated GeometryCameraCalibration calib = 2;
+}

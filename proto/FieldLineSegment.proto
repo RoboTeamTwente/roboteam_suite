@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+import "Vector2f.proto";
+
+package roboteam_proto;
+
+message FieldLineSegment {
+    string name = 1;
+    Vector2f begin = 2;
+    Vector2f end = 3;
+    float thickness = 4;
+}

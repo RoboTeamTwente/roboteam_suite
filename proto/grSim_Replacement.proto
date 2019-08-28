@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package roboteam_proto;
+
+message grSim_RobotReplacement {
+    double x=1;
+    double y=2;
+    double dir=3;
+    uint32 id=4;
+    bool yellowteam=5;
+}
+
+message grSim_BallReplacement {
+    double x=1;
+    double y=2;
+    double vx=3;
+    double vy=4;
+}
+
+message grSim_Replacement {
+    grSim_BallReplacement ball = 1;
+    repeated grSim_RobotReplacement robots = 2;
+}

@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package roboteam_proto;
+
+message RobotFeedback {
+    uint32 id = 1;
+    bool xSensCalibrated = 2;
+    bool ballSensorIsWorking = 3;
+    bool batteryLow = 4;
+    bool hasBall = 5;
+    float ballPos = 6;
+    bool genevaIsWorking = 7;
+    bool genevaIsTurning = 8;
+    int32 genevaState = 9;
+    float rho = 10;
+    float angle = 11;
+    float theta = 12;
+    bool hasLockedWheel = 13;
+    float signalStrength = 14;
+}
+
+
+
+

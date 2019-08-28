@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package roboteam_proto;
+
+message StringEntry {
+    string name = 1;
+    string value = 2;
+}

@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+import "Vector2f.proto";
+package roboteam_proto;
+
+message RobotCommand {
+    uint32 id = 1;
+    bool active = 2;
+    Vector2f vel = 3;
+    float w = 4;
+    bool use_angle = 5;
+    bool dribbler = 6;
+
+    bool kicker = 7;
+    bool chipper = 8;
+
+    bool chip_kick_forced = 9;
+    float chip_kick_vel = 10;
+    uint32 geneva_state = 11;
+}

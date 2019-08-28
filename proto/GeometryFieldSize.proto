@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package roboteam_proto;
+
+import "FieldLineSegment.proto";
+import "FieldCircularArc.proto";
+
+message GeometryFieldSize {
+
+    float field_length = 1;
+    float field_width = 2;
+    float goal_width = 3;
+    float goal_depth = 4;
+    float boundary_width = 5;
+
+    // The field lines and arcs. For easy addressing.
+    FieldLineSegment top_line = 6;
+    FieldLineSegment bottom_line = 7;
+    FieldLineSegment left_line = 8;
+    FieldLineSegment right_line = 9;
+    FieldLineSegment half_line = 10;
+    FieldLineSegment center_line = 11;
+    FieldLineSegment left_penalty_line = 12;
+    FieldLineSegment right_penalty_line = 13;
+
+    FieldCircularArc top_left_penalty_arc = 14;
+    FieldCircularArc bottom_left_penalty_arc = 15;
+    FieldCircularArc top_right_penalty_arc = 16;
+    FieldCircularArc bottom_right_penalty_arc = 17;
+    FieldLineSegment top_left_penalty_stretch = 18;
+    FieldLineSegment bottom_left_penalty_stretch = 19;
+    FieldLineSegment top_right_penalty_stretch = 20;
+    FieldLineSegment bottom_right_penalty_stretch = 21;
+    FieldCircularArc center_circle = 22;
+
+
+    // All the field lines and arcs again. For easy iterating.
+    repeated FieldLineSegment field_lines = 23;
+    repeated FieldCircularArc field_arcs = 24;
+
+}
+
