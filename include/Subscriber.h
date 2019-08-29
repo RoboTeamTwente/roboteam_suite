@@ -42,8 +42,9 @@ class Subscriber {
 
         google::protobuf::Message * obj = new T_Response();
         //= static_cast<google::protobuf::Message*>((T_Response*)0);
-
-        bool parseSuccess = obj->ParseFromString(response.get(0));
+        std::string responseStr = response.get(0);
+        std::string messageStr = responseStr.substr(topic.length(), responseStr.length() - topic.length());
+        bool parseSuccess = obj->ParseFromString(messageStr);
 
 
         if (parseSuccess) {
@@ -73,7 +74,10 @@ class Subscriber {
       zmqpp::message response;
       if(poller->has_input(* socket) ){
         socket->receive(response);
-        auto output = static_cast<google::protobuf::Message*>((T_Response*)0)->ParseFromString(response.get(0));
+        std::string responseStr = response.get(0);
+        std::string messageStr = responseStr.substr(topic.length(), responseStr.length() - topic.length());
+
+        auto output = static_cast<google::protobuf::Message*>((T_Response*)0)->ParseFromString(messageStr);
         subscriberCallback(output); // call the subscriberCallback function
       }
     };
