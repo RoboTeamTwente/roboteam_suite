@@ -65,7 +65,7 @@ message ("PROTO_SRCS = ${PROTO_SRCS}")
 message ("PROTO_HDRS = ${PROTO_HDRS}")
 
 # Add an executable
-add_library(roboteam_proto STATIC
+add_library(roboteam_proto SHARED
         ${PROTO_SRCS}
         ${PROTO_HDRS}
         src/Subscriber.cpp
