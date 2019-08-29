@@ -18,4 +18,7 @@ void roboteam_proto::Publisher::send(std::string message) {
   zmqpp::message transmission;
   transmission << data;
   socket->send(transmission);
+  std::cout << "send message: " << std::endl;
+
+  std::cout << message << std::endl;
 }

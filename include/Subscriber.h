@@ -12,8 +12,6 @@
 
 namespace roboteam_proto {
 
-typedef void (* subscriberCallback)(std::string response);
-
 class Subscriber {
   const std::string PUBLISH_ENDPOINT = "tcp://127.0.0.1:5555";
 
@@ -21,11 +19,16 @@ class Subscriber {
   zmqpp::context context;
   zmqpp::socket * socket;
   zmqpp::reactor reactor;
-  void setCallBack(subscriberCallback func);
   std::thread t1;
+  void createCallbackFunction(void (*subscriberCallback)(std::string));
+  void init(const std::string &topic);
 
  public:
-  Subscriber(std::string topic, subscriberCallback func);
+  template <class T>
+  Subscriber(std::string topic, void(T::* subscriberCallbackMethod)(std::string response), T& instance);
+
+  Subscriber(std::string topic, void(* subscriberCallbackMethod)(std::string response));
+
   void poll(zmqpp::reactor * reactor);
   void destroy();
 };
