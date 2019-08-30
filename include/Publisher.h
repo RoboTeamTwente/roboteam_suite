@@ -15,10 +15,9 @@ class Publisher {
  private:
   zmqpp::context context;
   zmqpp::socket *socket;
-  std::string topic = "";
  public:
-  explicit Publisher(std::string const & topic);
-  void send(std::string message);
+  explicit Publisher();
+  void send(std::string const& topic, std::string message);
 };
 }
 
