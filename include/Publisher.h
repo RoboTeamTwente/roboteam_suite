@@ -10,13 +10,11 @@
 
 namespace roboteam_proto {
 class Publisher {
-  const std::string PUBLISH_ENDPOINT = "tcp://127.0.0.1:5555";
-
  private:
   zmqpp::context context;
   zmqpp::socket *socket;
  public:
-  explicit Publisher();
+  explicit Publisher(std::string tcpPort);
   void send(std::string const& topic, std::string message);
 };
 }

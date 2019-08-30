@@ -6,10 +6,10 @@
 #include <iostream>
 #include <Subscriber.h>
 
-void roboteam_proto::Subscriber::init(const std::string &topic) {
+void roboteam_proto::Subscriber::init(std::string tcpPort, const std::string &topic) {
   this->socket = new zmqpp::socket(this->context, zmqpp::socket_type::sub);
   this->socket->subscribe(topic);
-  this->socket->connect(this->PUBLISH_ENDPOINT);
+  this->socket->connect(tcpPort);
 }
 
 // keep polling for new messages

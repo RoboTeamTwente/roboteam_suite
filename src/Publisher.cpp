@@ -6,9 +6,10 @@
 #include <string>
 
 // create a publisher which transmits messages over a given topic
-roboteam_proto::Publisher::Publisher() {
+roboteam_proto::Publisher::Publisher(std::string tcpPort) {
   socket = new zmqpp::socket(context, zmqpp::socket_type::pub);
-  socket->bind(PUBLISH_ENDPOINT);
+  std::cout << "binding to: " <<tcpPort << std::endl;
+  socket->bind(tcpPort);
 }
 
 // send a string over the topic
