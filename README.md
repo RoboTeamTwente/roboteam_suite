@@ -3,12 +3,11 @@ Protobuf and ZMQ bindings for RoboteamTwente
 
 
 # Installation on Linux
-
-install protobuf 3.9.1
-
 Make sure you already have the following:
 - CMake (3.10 or higher)
 
+
+### Install protobuf 3.9.1
 ```
 $ sudo apt-get install autoconf automake libtool curl make g++ unzip
 
@@ -22,10 +21,9 @@ $ make
 $ make check
 $ sudo make install
 $ sudo ldconfig # refresh shared library cache.
-
 ```
 
-Install ZMQ
+### Install ZMQ
 ```
 $ apt-get install libzmq3-dev libzmqpp-dev
 ```
