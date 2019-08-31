@@ -30,7 +30,7 @@ class Subscriber {
 // the new data will be available in the function.
 // this constructor can be used for method calls
   template <class T_Instance, class T_Response>
-  Subscriber(std::string tcpPort, std::string topic, void(T_Instance::*subscriberCallbackMethod)(T_Response * resp), T_Instance * instance) {
+  Subscriber(std::string tcpPort, std::string topic, void(T_Instance::*subscriberCallbackMethod)(T_Response & resp), T_Instance * instance) {
     init(tcpPort, topic);
 
     zmqpp::poller * poller = &reactor.get_poller();
@@ -39,7 +39,7 @@ class Subscriber {
       if(poller->has_input(* socket) ){
         socket->receive(response);
 
-        google::protobuf::Message * obj = new T_Response();
+        std::shared_ptr<google::protobuf::Message> obj = std::make_shared<T_Response>();
         //= static_cast<google::protobuf::Message*>((T_Response*)0);
         std::string responseStr = response.get(0);
         std::string messageStr = responseStr.substr(topic.length(), responseStr.length() - topic.length());
@@ -47,8 +47,8 @@ class Subscriber {
 
 
         if (parseSuccess) {
-          T_Response * output = dynamic_cast<T_Response*>(obj);
-          (instance->*subscriberCallbackMethod)(output); // call the subscriberCallback function
+            T_Response * output = dynamic_cast<T_Response*>(obj.get());
+          (instance->*subscriberCallbackMethod)(*output); // call the subscriberCallback function
         } else {
           std::cerr << "received faulty packet" << std::endl;
         }
@@ -68,6 +68,7 @@ class Subscriber {
   Subscriber(std::string tcpPort, std::string topic, void(* subscriberCallback)(T_Response response)) {
     init(tcpPort, topic);
 
+    //TODO this function does probably not work, use the method version above for now.
     zmqpp::poller * poller = &reactor.get_poller();
     auto callback = [=](){
       zmqpp::message response;
