@@ -39,7 +39,7 @@ class Subscriber {
       if(poller->has_input(* socket) ){
         socket->receive(response);
 
-        std::shared_ptr<google::protobuf::Message> obj = std::make_shared<T_Response>();
+        google::protobuf::Message * obj = new T_Response;
         //= static_cast<google::protobuf::Message*>((T_Response*)0);
         std::string responseStr = response.get(0);
         std::string messageStr = responseStr.substr(topic.length(), responseStr.length() - topic.length());
@@ -47,7 +47,7 @@ class Subscriber {
 
 
         if (parseSuccess) {
-            T_Response * output = dynamic_cast<T_Response*>(obj.get());
+            T_Response * output = dynamic_cast<T_Response*>(obj);
           (instance->*subscriberCallbackMethod)(*output); // call the subscriberCallback function
         } else {
           std::cerr << "received faulty packet" << std::endl;
