@@ -11,7 +11,11 @@ The structure used for robocup 2018-2019. the main problem is the unnecessary vi
 
 ### Structure 2:
 Structure 2 is much cleaner. without ROS a replacement for ros params is found by publishing settings which can be set in the interface from roboteam AI. This gives flexibility in configuration. Also roboteam_World is now only acting as a kalman filter and data channel. The output of world_state is not `us` and `them` anymore, but `blue` and `yellow`. This provides more flexibilty for later on, for example when using an autoref or when using two AI's at once (and displaying them in one interface). The main problem with this structure is that a lot of complexity is hidden in roboteam_ai. 
-![structure 2](https://i.imgur.com/EK3Sd0p.png)
+![structure 2](https://i.imgur.com/lzJMJPV.png)
+
+### Structure 3:
+This would be ideal, since the complexity of the interface in roboteam_Ai would be drastically reduced, while the functionality of the interface can greatly improve. 
+![structure 3](https://i.imgur.com/2haBLa8.png)
 
 
 
