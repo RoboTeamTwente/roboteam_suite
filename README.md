@@ -2,6 +2,26 @@
 Protobuf and ZMQ bindings for RoboteamTwente
 
 
+# usage
+Easiest way to run things is to make some compound executables in CLion that boot everything you need. Make sure you have grsim or ssl-vision running and are listening to the right ports.
+
+
+running one team:
+```
+./kalman_world
+./roboteam_ai
+./roboteam_robothub 
+```
+running two teams:
+```
+./kalman_world
+./roboteam_ai
+./roboteam_robothub 
+./roboteam_ai 1
+./roboteam_robothub 1
+```
+
+
 # Installation
 ## List of dependencies
 
