@@ -31,6 +31,7 @@ PROTOBUF_GENERATE_CPP(PROTO_SRCS PROTO_HDRS
         proto/RobotFeedback.proto
         proto/World.proto
         proto/StringEntry.proto
+        proto/Setting.proto
 
         proto/FieldCircularArc.proto
         proto/FieldLineSegment.proto
