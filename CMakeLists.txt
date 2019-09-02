@@ -1,12 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(roboteam_proto)
 
-#SET(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS} -g -O0 -Wall --coverage")
-set(CMAKE_CXX_FLAGS_DEBUG "-std=c++17 ${CMAKE_CXX_FLAGS} -O1")
-set(CMAKE_CXX_FLAGS_RELEASE "-std=c++17 ${CMAKE_CXX_FLAGS} -Werror -O1")
-
 SET(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")
-
 
 # find the protobuf compiler and libraries
 find_package(Protobuf 3.9.1 REQUIRED)
@@ -24,7 +19,7 @@ else()
 endif()
 
 # Generate the .h and .cxx files
-PROTOBUF_GENERATE_CPP(PROTO_SRCS PROTO_HDRS
+protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS
         proto/Vector2f.proto
         proto/Referee.proto
         proto/RobotCommand.proto
@@ -61,10 +56,6 @@ PROTOBUF_GENERATE_CPP(PROTO_SRCS PROTO_HDRS
         proto/messages_robocup_ssl_wrapper_legacy.proto
         )
 
-# Print path to generated files
-message ("PROTO_SRCS = ${PROTO_SRCS}")
-message ("PROTO_HDRS = ${PROTO_HDRS}")
-
 # Add an executable
 add_library(roboteam_proto SHARED
         ${PROTO_SRCS}
@@ -73,17 +64,15 @@ add_library(roboteam_proto SHARED
         src/Publisher.cpp)
 
 target_include_directories(roboteam_proto
-        PUBLIC
-        ${PROTOBUF_INCLUDE_DIRS}
-        ${CMAKE_CURRENT_BINARY_DIR}
+        PUBLIC ${PROTOBUF_INCLUDE_DIRS}
+        PUBLIC ${CMAKE_CURRENT_BINARY_DIR}
         )
 
 # link the exe against the libraries
 target_link_libraries(roboteam_proto
-        PUBLIC
-        ${PROTOBUF_LIBRARIES}
-        ${ZeroMQ_LIBRARIES}
-        ${ZMQPP_LIBRARIES}
+        PUBLIC ${PROTOBUF_LIBRARIES}
+        PRIVATE ${ZeroMQ_LIBRARIES}
+        PRIVATE ${ZMQPP_LIBRARIES}
         )
 
 target_include_directories(roboteam_proto PUBLIC
