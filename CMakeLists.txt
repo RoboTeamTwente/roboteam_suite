@@ -71,8 +71,8 @@ target_include_directories(roboteam_proto
 # link the exe against the libraries
 target_link_libraries(roboteam_proto
         PUBLIC ${PROTOBUF_LIBRARIES}
-        PRIVATE ${ZeroMQ_LIBRARIES}
-        PRIVATE ${ZMQPP_LIBRARIES}
+        PUBLIC ${ZeroMQ_LIBRARIES}
+        PUBLIC ${ZMQPP_LIBRARIES}
         )
 
 target_include_directories(roboteam_proto PUBLIC
