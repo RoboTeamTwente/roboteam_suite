@@ -4,7 +4,6 @@
 
 #include "Subscriber.h"
 #include <iostream>
-#include <Subscriber.h>
 
 void roboteam_proto::Subscriber::init(std::string tcpPort, const std::string &topic) {
   this->socket = new zmqpp::socket(this->context, zmqpp::socket_type::sub);

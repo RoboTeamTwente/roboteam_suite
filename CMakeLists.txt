@@ -63,19 +63,17 @@ add_library(roboteam_proto SHARED
         src/Subscriber.cpp
         src/Publisher.cpp)
 
-target_include_directories(roboteam_proto
-        PUBLIC ${PROTOBUF_INCLUDE_DIRS}
-        PUBLIC ${CMAKE_CURRENT_BINARY_DIR}
-        )
-
 # link the exe against the libraries
 target_link_libraries(roboteam_proto
         PUBLIC ${PROTOBUF_LIBRARIES}
+        # since Publishers/subscribers are templates these 2 libraries need to be PUBLIC
         PUBLIC ${ZeroMQ_LIBRARIES}
         PUBLIC ${ZMQPP_LIBRARIES}
         )
 
-target_include_directories(roboteam_proto PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-        $<INSTALL_INTERFACE:include>
+target_include_directories(roboteam_proto
+        PUBLIC ${PROTOBUF_INCLUDE_DIRS}
+        PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/..
+        INTERFACE include
+        PRIVATE include/roboteam_proto
         PRIVATE src )
