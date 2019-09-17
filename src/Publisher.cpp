@@ -4,6 +4,7 @@
 
 #include "Publisher.h"
 #include <string>
+#include <iostream>
 
 // create a publisher which transmits messages over a given topic
 roboteam_proto::Publisher::Publisher(std::string tcpPort) {
