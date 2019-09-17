@@ -6,7 +6,7 @@ SET(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")
 # find the protobuf compiler and libraries
 find_package(Protobuf 3.9.1 REQUIRED)
 find_package(zeroMQ REQUIRED)
-find_package(zmqpp REQUIRED)
+find_package(zmqpp 4.1.2 REQUIRED)
 
 # for zmq to work on mac
 set(ENABLE_DRAFTS OFF)
