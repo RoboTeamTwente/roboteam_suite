@@ -13,7 +13,7 @@ set(ENABLE_DRAFTS OFF)
 
 # check if protobuf was found
 if(PROTOBUF_FOUND)
-    message ("protobuf found")
+    message ("Protobuf 3.9.1 found")
 else()
     message (FATAL_ERROR "Cannot find Protobuf")
 endif()
@@ -61,7 +61,7 @@ add_library(roboteam_proto SHARED
         ${PROTO_SRCS}
         ${PROTO_HDRS}
         src/Subscriber.cpp
-        src/Publisher.cpp)
+        src/Publisher.cpp )
 
 # link the exe against the libraries
 target_link_libraries(roboteam_proto
@@ -74,6 +74,36 @@ target_link_libraries(roboteam_proto
 target_include_directories(roboteam_proto
         PUBLIC ${PROTOBUF_INCLUDE_DIRS}
         PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/..
+        INTERFACE include
+        PRIVATE include/roboteam_proto
+        PRIVATE src )
+
+
+#############
+## Testing ##
+#############
+add_executable(proto_tests
+        test/main.cpp
+        test/PubSubTest.cpp
+        )
+
+
+if(APPLE)
+    target_link_libraries(proto_tests
+            PUBLIC roboteam_proto
+            PUBLIC roboteam_utils
+            /usr/local/lib/libgtest.a
+            /usr/local/lib/libgtest_main.a)
+endif()
+
+if(UNIX AND NOT APPLE)
+    target_link_libraries(proto_tests
+            PUBLIC roboteam_proto
+            PUBLIC roboteam_utils
+            PRIVATE gcov)
+endif()
+
+target_include_directories(proto_tests
         INTERFACE include
         PRIVATE include/roboteam_proto
         PRIVATE src )

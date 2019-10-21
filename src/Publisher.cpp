@@ -14,9 +14,13 @@ roboteam_proto::Publisher::Publisher(std::string tcpPort) {
 }
 
 // send a string over the topic
-void roboteam_proto::Publisher::send(std::string const& topic, std::string message) {
+bool roboteam_proto::Publisher::send(std::string const& topic, std::string message) {
   std::string data = topic + message;
   zmqpp::message transmission;
   transmission << data;
-  socket->send(transmission);
+  return socket->send(transmission, true);
+}
+
+roboteam_proto::Publisher::~Publisher() {
+  delete socket;
 }

@@ -12,10 +12,11 @@ namespace roboteam_proto {
 class Publisher {
  private:
   zmqpp::context context;
-  zmqpp::socket *socket;
+  zmqpp::socket * socket;
  public:
   explicit Publisher(std::string tcpPort);
-  void send(std::string const& topic, std::string message);
+  ~Publisher();
+  bool send(std::string const& topic, std::string message);
 };
 }
 
