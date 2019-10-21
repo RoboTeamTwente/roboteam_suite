@@ -22,5 +22,6 @@ bool roboteam_proto::Publisher::send(std::string const& topic, std::string messa
 }
 
 roboteam_proto::Publisher::~Publisher() {
+  socket->close();
   delete socket;
 }

@@ -14,16 +14,15 @@ void roboteam_proto::Subscriber::init(const std::string & tcpPort, const std::st
 
 // keep polling for new messages
 void roboteam_proto::Subscriber::poll(zmqpp::reactor * reactor) {
-  while (running && reactor->poll()) { }
-}
-
-// when finished this function should be called
-void roboteam_proto::Subscriber::destroy() {
-  t1.join();
+  while (running) {
+    reactor->poll();
+  }
 }
 
 roboteam_proto::Subscriber::~Subscriber() {
   running = false;
+  reactor.remove(*socket);
   t1.join();
+  socket->close();
   delete socket;
 }

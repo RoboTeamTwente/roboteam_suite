@@ -92,7 +92,6 @@ class Subscriber {
 
   ~Subscriber();
   void poll(zmqpp::reactor * reactor);
-  void destroy();
 };
 }
 
