@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/RoboTeamTwente/roboteam_proto.svg?branch=master)](https://travis-ci.com/RoboTeamTwente/roboteam_proto)
+
 # roboteam_proto
 Protobuf and ZMQ bindings for RoboteamTwente
 
