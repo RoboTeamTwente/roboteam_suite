@@ -19,6 +19,7 @@ notifications:
 cache:
   directories:
     - $HOME/Library/Caches/Homebrew
+    - $HOME/.ccache
 
 install:
   - cd ~/
