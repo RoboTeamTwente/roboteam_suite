@@ -8,6 +8,7 @@ addons:
       - zmq
       - zmqpp
       - protobuf
+      - armadillo
       - ccache
       - ninja
       - qt
