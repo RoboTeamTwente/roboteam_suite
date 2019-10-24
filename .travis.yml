@@ -5,11 +5,12 @@ osx_image: xcode11.2
 addons:
   homebrew:
     packages:
-      - gcc@7
       - zmq
       - zmqpp
       - protobuf
       - ccache
+      - ninja
+      - qt
 
 notifications:
   email: false
@@ -18,9 +19,31 @@ cache:
   directories:
     - $HOME/Library/Caches/Homebrew
 
+install:
+  - cd ~/
+  - git clone https://github.com/google/googletest.git
+  - cd googletest
+  - mkdir install
+  - cd install
+  - cmake ../  #creates a make file
+  - make #compiles Google Test
+  - sudo make install #installs Google Test
+
 script:
-- export CC="ccache gcc"
-- export CXX="ccache g++"
-- mkdir cmake-build-debug && cd cmake-build-debug;
-- cmake ..
-- cmake --build . --target proto_tests -- -j 8
+  - cd ~
+  - export CC="ccache gcc"
+  - export CXX="ccache g++"
+  - export CCACHE_SLOPPINESS=pch_defines,time_macros
+  - git clone https://github.com/RoboTeamTwente/roboteam_suite roboteam_suite --recurse-submodules
+  - cd ~/roboteam_suite
+  - rm -rf roboteam_proto
+  - rm -rf roboteam_ai
+  - rm -rf roboteam_world
+  - git submodule foreach git checkout master
+  - mv ${TRAVIS_BUILD_DIR} .
+  - mkdir cmake-build-debug && cd cmake-build-debug;
+  - cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Ninja" ..
+  - cmake --build . --target proto_tests -- -j 8
+
+#after_success:
+#  - bash <(curl -s https://codecov.io/bash) -f roboteam_ai_coverage.info.cleaned || echo "Codecov did not collect coverage reports"
