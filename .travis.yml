@@ -1,19 +1,22 @@
 language: cpp
 os: osx
+osx_image: xcode11.2
 
 notifications:
   email: false
+
+before_cache:
+  - brew cleanup
+
 cache:
-- ccache
+  directories:
+    - $HOME/Library/Caches/Homebrew
 
 before_install:
 - brew update
-- brew install zmq zmqpp armadillo protobuf
+- brew install zmq zmqpp protobuf
 
 script:
 - mkdir cmake-build-debug && cd cmake-build-debug;
-- cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Ninja" ..
-- cmake --build . --target roboteam_proto -- -j 8
-
-after_success:
-- bash <(curl -s https://codecov.io/bash) -f roboteam_ai_coverage.info.cleaned || echo "Codecov did not collect coverage reports"
+- cmake ..
+- cmake --build . --target proto_tests -- -j 8
