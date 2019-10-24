@@ -25,8 +25,8 @@ TEST(PubSubTest, function_subscription) {
     pub->send("dummy_robotcommand_topic", cmd.SerializeAsString());
   }
 
-  // the communication should be super FAST (<1ms)
-  ASSERT_LE( roboteam_utils::Timer::getCurrentTime().count() - receivedTime,  1);
+  // the communication should be fast (<5ms)
+  EXPECT_LE( roboteam_utils::Timer::getCurrentTime().count() - receivedTime,  5);
 
   delete pub;
   delete sub;
@@ -67,8 +67,8 @@ TEST(PubSubTest, method_subscription) {
     pub->send("dummy_robotcommand_topic", cmd.SerializeAsString());
   }
 
-  // the communication should be fast (<1ms)
-  ASSERT_LE( roboteam_utils::Timer::getCurrentTime().count() - dummy.receivedTime,  1);
+  // the communication should be fast (<5ms)
+  EXPECT_LE( roboteam_utils::Timer::getCurrentTime().count() - dummy.receivedTime,  5);
   EXPECT_EQ(dummy.cmd.geneva_state(), 2);
 
   delete pub;
