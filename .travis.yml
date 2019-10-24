@@ -38,6 +38,9 @@ script:
   - cd ~/roboteam_suite
   - rm -rf roboteam_proto
   - git submodule foreach git checkout master
+  - cd roboteam_ai            # ai has to be on development for some qt fixes
+  - git checkout development  # ai has to be on development for some qt fixes
+  - cd ..                     # ai has to be on development for some qt fixes
   - mv ${TRAVIS_BUILD_DIR} .
   - mkdir cmake-build-debug && cd cmake-build-debug;
   - cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Ninja" ..
