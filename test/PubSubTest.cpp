@@ -15,7 +15,7 @@ void handleRobotCommand(roboteam_proto::RobotCommand & robot_command) {
 
 TEST(PubSubTest, function_subscription) {
   const roboteam_proto::Channel DUMMY_CHANNEL = {"dummy_channel", "tcp://127.0.0.1:5555"};
-  auto sub = std::make_shared<roboteam_proto::Subscriber>(DUMMY_CHANNEL, &handleRobotCommand);
+  auto sub = std::make_shared<roboteam_proto::Subscriber<roboteam_proto::RobotCommand>>(DUMMY_CHANNEL, &handleRobotCommand);
   auto pub = std::make_shared<roboteam_proto::Publisher<roboteam_proto::RobotCommand>>(DUMMY_CHANNEL);
 
   roboteam_proto::RobotCommand cmd;
@@ -31,21 +31,21 @@ TEST(PubSubTest, function_subscription) {
     pub->send(cmd);
   }
 
-  // the communication should be fast (<5ms)
-  EXPECT_LE( roboteam_utils::Timer::getCurrentTime().count() - receivedTime,  5);
+  // the communication should be fast (<10ms)
+  EXPECT_LE( roboteam_utils::Timer::getCurrentTime().count() - receivedTime,  10);
 }
 
 
 TEST(PubSubTest, method_subscription) {
   struct Dummy {
     roboteam_proto::RobotCommand cmd;
-    std::shared_ptr<roboteam_proto::Subscriber> sub;
+    std::shared_ptr<roboteam_proto::Subscriber<roboteam_proto::RobotCommand>> sub;
     bool got_command = false;
     int receivedTime = 0;
 
     Dummy() {
       const roboteam_proto::Channel DUMMY_CHANNEL = {"dummy_channel", "tcp://127.0.0.1:5555"};
-      sub = std::make_shared<roboteam_proto::Subscriber>(DUMMY_CHANNEL, &Dummy::handle_message, this);
+      sub = std::make_shared<roboteam_proto::Subscriber<roboteam_proto::RobotCommand>>(DUMMY_CHANNEL, &Dummy::handle_message, this);
     }
 
     void handle_message(roboteam_proto::RobotCommand & robotcommand) {
@@ -73,7 +73,7 @@ TEST(PubSubTest, method_subscription) {
     pub->send(cmd);
   }
 
-  // the communication should be fast (<5ms)
-  EXPECT_LE( roboteam_utils::Timer::getCurrentTime().count() - dummy.receivedTime,  5);
+  // the communication should be fast (<10ms)
+  EXPECT_LE( roboteam_utils::Timer::getCurrentTime().count() - dummy.receivedTime,  10);
   EXPECT_EQ(dummy.cmd.geneva_state(), 2);
 }

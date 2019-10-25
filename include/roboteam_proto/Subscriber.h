@@ -11,6 +11,7 @@
 
 namespace roboteam_proto {
 
+template <class T_Response>
 class Subscriber {
  private:
   Channel channel;
@@ -20,13 +21,20 @@ class Subscriber {
   std::thread t1;
   bool running;
 
-  void init(const Channel & channel);
+  void init(const Channel & channel) {
+    std::cout << "[Roboteam_proto] Starting subscriber for " << channel.name << std::endl;
+    this->reactor = new zmqpp::reactor();
+    this->socket = new zmqpp::socket(this->context, zmqpp::socket_type::sub);
+    this->socket->subscribe("");
+    this->socket->connect(channel.port);
+    running = true;
+  }
 
  public:
   // create a subscriber with a callback function that gets called when new data is available
   // the new data will be available in the function.
   // this constructor can be used for method calls
-  template <class T_Instance, class T_Response>
+  template <class T_Instance>
   Subscriber(const Channel & channel, void(T_Instance::*subscriberCallbackMethod)(T_Response & resp), T_Instance * instance)
       : channel(channel) {
     init(channel);
@@ -55,7 +63,6 @@ class Subscriber {
   // create a subscriber with a callback function that gets called when new data is available
   // the new data will be available in the function.
   // this constructor can be used for free function calls
-  template <class T_Response>
   Subscriber(const Channel & channel, void (*func)(T_Response & resp))
       : channel(channel) {
     init(channel);
@@ -81,8 +88,21 @@ class Subscriber {
     t1 = std::thread(&Subscriber::poll, this);
   }
 
-  ~Subscriber();
-  void poll();
+  ~Subscriber() {
+    std::cout << "[Roboteam_proto] Stopping subscriber for " << channel.name << std::endl;
+    running = false;
+    t1.join();
+    reactor->remove(*socket);
+    socket->close();
+    delete socket;
+    delete reactor;
+  }
+
+  void poll() {
+    while (running) {
+      reactor->poll(500);
+    }
+  }
 };
 }
 
