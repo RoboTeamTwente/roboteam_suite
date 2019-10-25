@@ -13,8 +13,9 @@ class Publisher {
  private:
   zmqpp::context context;
   zmqpp::socket * socket;
+  std::string tcpPort;
  public:
-  explicit Publisher(std::string tcpPort);
+  explicit Publisher(const std::string & tcpPort);
   ~Publisher();
   bool send(std::string const& topic, std::string message);
 };

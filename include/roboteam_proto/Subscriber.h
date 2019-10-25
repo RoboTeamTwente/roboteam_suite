@@ -17,9 +17,11 @@ namespace roboteam_proto {
 class Subscriber {
 
  private:
+  std::string tcpPort;
+  std::string topic;
   zmqpp::context context;
   zmqpp::socket * socket;
-  zmqpp::reactor reactor;
+  zmqpp::reactor * reactor;
   std::thread t1;
   bool running;
 
@@ -30,10 +32,11 @@ class Subscriber {
   // the new data will be available in the function.
   // this constructor can be used for method calls
   template <class T_Instance, class T_Response>
-  Subscriber(const std::string & tcpPort, const std::string & topic, void(T_Instance::*subscriberCallbackMethod)(T_Response & resp), T_Instance * instance) {
+  Subscriber(const std::string & tcpPort, const std::string & topic, void(T_Instance::*subscriberCallbackMethod)(T_Response & resp), T_Instance * instance)
+      : tcpPort(tcpPort), topic(topic) {
     init(tcpPort, topic);
 
-    zmqpp::poller * poller = &reactor.get_poller();
+    zmqpp::poller * poller = &reactor->get_poller();
     auto callback = [=](){
       zmqpp::message response;
       if(poller->has_input(* socket) ){
@@ -54,8 +57,8 @@ class Subscriber {
         }
       }
     };
-    reactor.add(* socket, callback);
-    t1 = std::thread(&Subscriber::poll, this, &reactor);
+    reactor->add(* socket, callback);
+    t1 = std::thread(&Subscriber::poll, this);
   }
 
   // create a subscriber with a callback function that gets called when new data is available
@@ -63,10 +66,11 @@ class Subscriber {
   // this constructor can be used for free function calls
   template <class T_Response>
 
-  Subscriber(const std::string & tcpPort, const std::string & topic, void (*func)(T_Response & resp)) {
+  Subscriber(const std::string & tcpPort, const std::string & topic, void (*func)(T_Response & resp))
+      : tcpPort(tcpPort), topic(topic) {
     init(tcpPort, topic);
 
-    zmqpp::poller * poller = &reactor.get_poller();
+    zmqpp::poller * poller = &reactor->get_poller();
     auto callback = [=]() {
       zmqpp::message response;
       if(poller->has_input(* socket) ){
@@ -86,12 +90,12 @@ class Subscriber {
         }
       }
     };
-    reactor.add(* socket, callback);
-    t1 = std::thread(&Subscriber::poll, this, &reactor);
+    reactor->add(* socket, callback);
+    t1 = std::thread(&Subscriber::poll, this);
   }
 
   ~Subscriber();
-  void poll(zmqpp::reactor * reactor);
+  void poll();
 };
 }
 
