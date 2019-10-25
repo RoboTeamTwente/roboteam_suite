@@ -3,14 +3,13 @@
 
 /*
  * Set up a connection.
- * Subscribe to a topic on a given port
  */
-void roboteam_proto::Subscriber::init(const std::string & tcpPort, const std::string &topic) {
+void roboteam_proto::Subscriber::init(const Channel & channel) {
+  std::cout << "[Roboteam_proto] Starting subscriber for " << channel.name << std::endl;
   this->reactor = new zmqpp::reactor();
   this->socket = new zmqpp::socket(this->context, zmqpp::socket_type::sub);
-  this->socket->subscribe(topic);
-  this->socket->connect(tcpPort);
-  std::cout << "[Roboteam_proto] Subscriber binding to address: " << tcpPort <<  ", with topic: " << topic << std::endl;
+  this->socket->subscribe("");
+  this->socket->connect(channel.port);
   running = true;
 }
 
@@ -27,12 +26,12 @@ void roboteam_proto::Subscriber::poll() {
  * Graceful shutdown. Stop the polling thread, close the socket and delete the pointers.
  */
 roboteam_proto::Subscriber::~Subscriber() {
+  std::cout << "[Roboteam_proto] Stopping subscriber for " << channel.name << std::endl;
+
   running = false;
-  reactor->get_poller().remove(*socket);
   reactor->remove(*socket);
   t1.join();
   socket->close();
-  std::cout << "[Roboteam_proto] Subscriber shut down for address: " << tcpPort <<  ", with topic: " << topic << std::endl;
   delete socket;
   delete reactor;
 }

@@ -1,7 +1,3 @@
-//
-// Created by Lukas Bos on 28/08/2019.
-//
-
 #ifndef RTT_SUBSCRIBER_H
 #define RTT_SUBSCRIBER_H
 
@@ -11,30 +7,29 @@
 #include <zmqpp/reactor.hpp>
 #include <google/protobuf/message.h>
 #include <functional>
+#include "Channel.h"
 
 namespace roboteam_proto {
 
 class Subscriber {
-
  private:
-  std::string tcpPort;
-  std::string topic;
+  Channel channel;
   zmqpp::context context;
   zmqpp::socket * socket;
   zmqpp::reactor * reactor;
   std::thread t1;
   bool running;
 
-  void init(const std::string & tcpPort, const std::string &topic);
+  void init(const Channel & channel);
 
  public:
   // create a subscriber with a callback function that gets called when new data is available
   // the new data will be available in the function.
   // this constructor can be used for method calls
   template <class T_Instance, class T_Response>
-  Subscriber(const std::string & tcpPort, const std::string & topic, void(T_Instance::*subscriberCallbackMethod)(T_Response & resp), T_Instance * instance)
-      : tcpPort(tcpPort), topic(topic) {
-    init(tcpPort, topic);
+  Subscriber(const Channel & channel, void(T_Instance::*subscriberCallbackMethod)(T_Response & resp), T_Instance * instance)
+      : channel(channel) {
+    init(channel);
 
     zmqpp::poller * poller = &reactor->get_poller();
     auto callback = [=](){
@@ -43,11 +38,7 @@ class Subscriber {
         socket->receive(response);
 
         google::protobuf::Message * obj = new T_Response;
-        //= static_cast<google::protobuf::Message*>((T_Response*)0);
-        std::string responseStr = response.get(0);
-        std::string messageStr = responseStr.substr(topic.length(), responseStr.length() - topic.length());
-        bool parseSuccess = obj->ParseFromString(messageStr);
-
+        bool parseSuccess = obj->ParseFromString(response.get(0));
 
         if (parseSuccess) {
             auto output = dynamic_cast<T_Response*>(obj);
@@ -65,10 +56,9 @@ class Subscriber {
   // the new data will be available in the function.
   // this constructor can be used for free function calls
   template <class T_Response>
-
-  Subscriber(const std::string & tcpPort, const std::string & topic, void (*func)(T_Response & resp))
-      : tcpPort(tcpPort), topic(topic) {
-    init(tcpPort, topic);
+  Subscriber(const Channel & channel, void (*func)(T_Response & resp))
+      : channel(channel) {
+    init(channel);
 
     zmqpp::poller * poller = &reactor->get_poller();
     auto callback = [=]() {
@@ -77,10 +67,7 @@ class Subscriber {
         socket->receive(response);
 
         google::protobuf::Message * obj = new T_Response;
-        //= static_cast<google::protobuf::Message*>((T_Response*)0);
-        std::string responseStr = response.get(0);
-        std::string messageStr = responseStr.substr(topic.length(), responseStr.length() - topic.length());
-        bool parseSuccess = obj->ParseFromString(messageStr);
+        bool parseSuccess = obj->ParseFromString(response.get(0));
 
         if (parseSuccess) {
           auto output = dynamic_cast<T_Response*>(obj);

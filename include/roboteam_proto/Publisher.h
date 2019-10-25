@@ -7,17 +7,37 @@
 
 #include <string>
 #include <zmqpp/zmqpp.hpp>
+#include <google/protobuf/message.h>
+#include "Channel.h"
 
 namespace roboteam_proto {
+
+template <class T>
 class Publisher {
  private:
   zmqpp::context context;
   zmqpp::socket * socket;
-  std::string tcpPort;
+  Channel channel;
+
  public:
-  explicit Publisher(const std::string & tcpPort);
-  ~Publisher();
-  bool send(std::string const& topic, std::string message);
+  Publisher(const Publisher & copy) = delete; // you cannot copy this object
+  explicit Publisher(const Channel & channel) : channel(channel) {
+    std::cout << "[Roboteam_proto] Starting publisher for channel " << channel.name << std::endl;
+    socket = new zmqpp::socket(context, zmqpp::socket_type::pub);
+    socket->bind(channel.port);
+  }
+
+  ~Publisher() {
+    std::cout << "[Roboteam_proto] Stopping publisher for channel " << channel.name << std::endl;
+    socket->close();
+    delete socket;
+  }
+
+  bool send(const T & message) {
+    zmqpp::message transmission;
+    transmission << message.SerializeAsString();
+    return socket->send(transmission, true);
+  }
 };
 }
 

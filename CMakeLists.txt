@@ -62,7 +62,8 @@ add_library(roboteam_proto SHARED
         ${PROTO_SRCS}
         ${PROTO_HDRS}
         src/Subscriber.cpp
-        src/Publisher.cpp )
+        src/Publisher.cpp
+        src/Channel.cpp)
 
 # link the exe against the libraries
 target_link_libraries(roboteam_proto
