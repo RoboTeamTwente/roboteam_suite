@@ -1,10 +1,10 @@
-//
-// Created by Lukas Bos on 28/08/2019.
-//
-
 #include "Subscriber.h"
 #include <iostream>
 
+/*
+ * Set up a connection.
+ * Subscribe to a topic on a given port
+ */
 void roboteam_proto::Subscriber::init(const std::string & tcpPort, const std::string &topic) {
   this->reactor = new zmqpp::reactor();
   this->socket = new zmqpp::socket(this->context, zmqpp::socket_type::sub);
@@ -14,13 +14,18 @@ void roboteam_proto::Subscriber::init(const std::string & tcpPort, const std::st
   running = true;
 }
 
-// keep polling for new messages
+/*
+ * Poll for messages
+ */
 void roboteam_proto::Subscriber::poll() {
   while (running) {
      reactor->poll();
   }
 }
 
+/*
+ * Graceful shutdown. Stop the polling thread, close the socket and delete the pointers.
+ */
 roboteam_proto::Subscriber::~Subscriber() {
   running = false;
   reactor->get_poller().remove(*socket);
