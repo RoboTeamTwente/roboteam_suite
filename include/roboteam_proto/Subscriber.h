@@ -1,3 +1,4 @@
+
 #ifndef RTT_SUBSCRIBER_H
 #define RTT_SUBSCRIBER_H
 
@@ -11,6 +12,17 @@
 
 namespace roboteam_proto {
 
+/*
+ * Defines a subscriber that subscribers to a TCP channel and forwards the message to a callback function/method
+ * The type of the messages passed has to be specified beforehand in the template.
+ *
+ * This class is designed according to RAII: creating the object immediately subscribes to the channel,
+ * and deleting the object immediately unsubscribes to the channel and cleans up memory.
+ *
+ * @author Lukas Bos
+ * @date 26-10-2019
+ */
+
 template <class T_Response>
 class Subscriber {
  private:
@@ -21,7 +33,22 @@ class Subscriber {
   std::thread t1;
   bool running;
 
-  void init(const Channel & channel) {
+ public:
+  // Apply rule of 5: in all cases we cannot copy/move this object
+  Subscriber(const Subscriber & copy) = delete;
+  Subscriber& operator=(const Subscriber& other) = delete;
+  Subscriber(const Subscriber && copy) = delete;
+  Subscriber& operator=(Subscriber&& data) = delete;
+
+ private:
+
+  /*
+   * Initialize the subscriber.
+   * Bind to the socket on the given channel
+   *
+   * @param channel: the channel to subscribe to
+   */
+  void init() {
     std::cout << "[Roboteam_proto] Starting subscriber for " << channel.name << std::endl;
     this->reactor = new zmqpp::reactor();
     this->socket = new zmqpp::socket(this->context, zmqpp::socket_type::sub);
@@ -30,29 +57,33 @@ class Subscriber {
     running = true;
   }
 
+
  public:
-  // create a subscriber with a callback function that gets called when new data is available
-  // the new data will be available in the function.
-  // this constructor can be used for method calls
+  /*
+   * Create a subscriber with a callback method that gets called when new data is available
+   * the new data will be available in the function.
+   * this constructor can be used for free function calls
+   *
+   * @param channel: the channel to subscribe to
+   * @param resp: A method pointer to a callback taking a reference to the specified response type
+   * @param instance: the context of the method, i.e. a pointer to the class the method belongs to.
+   */
   template <class T_Instance>
   Subscriber(const Channel & channel, void(T_Instance::*subscriberCallbackMethod)(T_Response & resp), T_Instance * instance)
       : channel(channel) {
-    init(channel);
+    init();
 
     zmqpp::poller * poller = &reactor->get_poller();
     auto callback = [=](){
-      zmqpp::message response;
       if(poller->has_input(* socket) ){
+        zmqpp::message response;
+        T_Response output;
+
         socket->receive(response);
-
-        google::protobuf::Message * obj = new T_Response;
-        bool parseSuccess = obj->ParseFromString(response.get(0));
-
-        if (parseSuccess) {
-            auto output = dynamic_cast<T_Response*>(obj);
-          (instance->*subscriberCallbackMethod)(*output); // call the subscriberCallback function
+        if (output.ParseFromString(response.get(0))) {
+          (instance->*subscriberCallbackMethod)(output); // call the subscriberCallback function
         } else {
-          std::cerr << "received faulty packet" << std::endl;
+          std::cerr << "[Roboteam_proto] Received faulty packet" << std::endl;
         }
       }
     };
@@ -60,27 +91,29 @@ class Subscriber {
     t1 = std::thread(&Subscriber::poll, this);
   }
 
-  // create a subscriber with a callback function that gets called when new data is available
-  // the new data will be available in the function.
-  // this constructor can be used for free function calls
+  /*
+   * Create a subscriber with a callback function that gets called when new data is available
+   * the new data will be available in the function.
+   * this constructor can be used for free function calls
+   *
+   * @param channel: the channel to subscribe to
+   * @param resp: A function pointer to a callback taking a reference to the specified response type
+   */
   Subscriber(const Channel & channel, void (*func)(T_Response & resp))
       : channel(channel) {
-    init(channel);
+    init();
 
     zmqpp::poller * poller = &reactor->get_poller();
     auto callback = [=]() {
-      zmqpp::message response;
       if(poller->has_input(* socket) ){
+        zmqpp::message response;
+        T_Response output;
+
         socket->receive(response);
-
-        google::protobuf::Message * obj = new T_Response;
-        bool parseSuccess = obj->ParseFromString(response.get(0));
-
-        if (parseSuccess) {
-          auto output = dynamic_cast<T_Response*>(obj);
-          func(*output); // call the subscriberCallback function
+        if (output.ParseFromString(response.get(0))) {
+          func(output); // call the subscriberCallback function
         } else {
-          std::cerr << "Received faulty packet" << std::endl;
+          std::cerr << "[Roboteam_proto] Received faulty packet" << std::endl;
         }
       }
     };
@@ -88,6 +121,12 @@ class Subscriber {
     t1 = std::thread(&Subscriber::poll, this);
   }
 
+
+  /*
+   * Deletes the subscriber.
+   * First we make sure the polling thread stops and join the thread.
+   * Then we safely close the socket and delete the pointers.
+   */
   ~Subscriber() {
     std::cout << "[Roboteam_proto] Stopping subscriber for " << channel.name << std::endl;
     running = false;
@@ -98,9 +137,15 @@ class Subscriber {
     delete reactor;
   }
 
+
+  /*
+   * Poll for new messages with a timeout of 167 ms.
+   * This practically means we evaluate the 'running' variable every 167ms
+   * 167 ms is approximately equivalent to the time it takes to receive 10 packets on 60hz
+   */
   void poll() {
     while (running) {
-      reactor->poll(500);
+      reactor->poll(167);
     }
   }
 };

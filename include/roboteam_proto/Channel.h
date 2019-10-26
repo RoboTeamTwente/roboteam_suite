@@ -9,6 +9,7 @@ struct Channel {
   std::string name;
   std::string port;
 
+  Channel() =default;
   Channel(std::string name, std::string port);
   Channel(const Channel & other);
 };
