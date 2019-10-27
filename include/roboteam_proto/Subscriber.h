@@ -8,6 +8,7 @@
 #include <zmqpp/reactor.hpp>
 #include <google/protobuf/message.h>
 #include <functional>
+#include <roboteam_utils/constants.h>
 #include "Channel.h"
 
 namespace roboteam_proto {
@@ -48,8 +49,9 @@ class Subscriber {
    *
    * @param channel: the channel to subscribe to
    */
-  void init() {
-    std::cout << "[Roboteam_proto] Starting subscriber for " << channel.name << std::endl;
+  void init(const roboteam_utils::ChannelType & channelType) {
+      this->channel = roboteam_utils::CHANNELS.at(channelType);
+      std::cout << "[Roboteam_proto] Starting subscriber for " << channel.name << std::endl;
     this->reactor = new zmqpp::reactor();
     this->socket = new zmqpp::socket(this->context, zmqpp::socket_type::sub);
     this->socket->subscribe("");
@@ -69,9 +71,8 @@ class Subscriber {
    * @param instance: the context of the method, i.e. a pointer to the class the method belongs to.
    */
   template <class T_Instance>
-  Subscriber(const Channel & channel, void(T_Instance::*subscriberCallbackMethod)(T_Response & resp), T_Instance * instance)
-      : channel(channel) {
-    init();
+  Subscriber(const roboteam_utils::ChannelType & channelType, void(T_Instance::*subscriberCallbackMethod)(T_Response & resp), T_Instance * instance) {
+    init(channelType);
 
     zmqpp::poller * poller = &reactor->get_poller();
     auto callback = [=](){
@@ -99,9 +100,8 @@ class Subscriber {
    * @param channel: the channel to subscribe to
    * @param resp: A function pointer to a callback taking a reference to the specified response type
    */
-  Subscriber(const Channel & channel, void (*func)(T_Response & resp))
-      : channel(channel) {
-    init();
+  Subscriber(const roboteam_utils::ChannelType & channelType, void (*func)(T_Response & resp)) {
+      init(channelType);
 
     zmqpp::poller * poller = &reactor->get_poller();
     auto callback = [=]() {

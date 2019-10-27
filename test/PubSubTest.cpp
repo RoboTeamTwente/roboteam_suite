@@ -14,9 +14,8 @@ void handleRobotCommand(roboteam_proto::RobotCommand & robot_command) {
 }
 
 TEST(PubSubTest, function_subscription) {
-  const roboteam_proto::Channel DUMMY_CHANNEL = {"dummy_channel", "tcp://127.0.0.1:5555"};
-  auto sub = std::make_shared<roboteam_proto::Subscriber<roboteam_proto::RobotCommand>>(DUMMY_CHANNEL, &handleRobotCommand);
-  auto pub = std::make_shared<roboteam_proto::Publisher<roboteam_proto::RobotCommand>>(DUMMY_CHANNEL);
+  auto sub = std::make_shared<roboteam_proto::Subscriber<roboteam_proto::RobotCommand>>(roboteam_utils::ROBOT_COMMANDS_PRIMARY_CHANNEL, &handleRobotCommand);
+  auto pub = std::make_shared<roboteam_proto::Publisher<roboteam_proto::RobotCommand>>(roboteam_utils::ROBOT_COMMANDS_PRIMARY_CHANNEL);
 
   roboteam_proto::RobotCommand cmd;
   cmd.set_geneva_state(4);
@@ -45,7 +44,7 @@ TEST(PubSubTest, method_subscription) {
 
     Dummy() {
       const roboteam_proto::Channel DUMMY_CHANNEL = {"dummy_channel", "tcp://127.0.0.1:5555"};
-      sub = std::make_shared<roboteam_proto::Subscriber<roboteam_proto::RobotCommand>>(DUMMY_CHANNEL, &Dummy::handle_message, this);
+      sub = std::make_shared<roboteam_proto::Subscriber<roboteam_proto::RobotCommand>>(roboteam_utils::ROBOT_COMMANDS_PRIMARY_CHANNEL, &Dummy::handle_message, this);
     }
 
     void handle_message(roboteam_proto::RobotCommand & robotcommand) {
@@ -56,10 +55,8 @@ TEST(PubSubTest, method_subscription) {
   };
 
   Dummy dummy;
-
-  const roboteam_proto::Channel DUMMY_CHANNEL = {"dummy_channel", "tcp://127.0.0.1:5555"};
-
-  auto pub = std::make_shared<roboteam_proto::Publisher<roboteam_proto::RobotCommand>>(DUMMY_CHANNEL);
+  
+  auto pub = std::make_shared<roboteam_proto::Publisher<roboteam_proto::RobotCommand>>(roboteam_utils::ROBOT_COMMANDS_PRIMARY_CHANNEL);
   roboteam_proto::RobotCommand cmd;
   cmd.set_geneva_state(2);
 

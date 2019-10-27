@@ -4,6 +4,7 @@
 #include <string>
 #include <zmqpp/zmqpp.hpp>
 #include <google/protobuf/message.h>
+#include <roboteam_utils/constants.h>
 #include "Channel.h"
 
 namespace roboteam_proto {
@@ -37,7 +38,8 @@ class Publisher {
    *
    * @param channel: The channel to publish to.
    */
-  explicit Publisher(const Channel &channel) : channel(channel) {
+  explicit Publisher(const roboteam_utils::ChannelType & channelType)
+        : channel (roboteam_utils::CHANNELS.at(channelType)) {
       std::cout << "[Roboteam_proto] Starting publisher for channel " << channel.name << std::endl;
       socket = new zmqpp::socket(context, zmqpp::socket_type::pub);
       socket->bind(channel.port);

@@ -12,6 +12,9 @@ struct Channel {
   Channel() =default;
   Channel(std::string name, std::string port);
   Channel(const Channel & other);
+
+  bool operator == (const Channel & other);
+  bool operator != (const Channel & other);
 };
 
 }
