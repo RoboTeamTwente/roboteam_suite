@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package roboteam_proto;
+package proto;
 
 message RobotFeedback {
     uint32 id = 1;

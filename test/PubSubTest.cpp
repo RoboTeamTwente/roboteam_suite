@@ -7,17 +7,17 @@
 bool messageReceivedSuccesFully = false;
 double receivedTime = 0;
 
-void handleRobotCommand(roboteam_proto::RobotCommand & robot_command) {
+void handleRobotCommand(proto::RobotCommand & robot_command) {
   EXPECT_EQ(robot_command.geneva_state(), 4);
   receivedTime = robot_command.id();
   messageReceivedSuccesFully = true;
 }
 
 TEST(PubSubTest, function_subscription) {
-  auto sub = std::make_shared<roboteam_proto::Subscriber<roboteam_proto::RobotCommand>>(roboteam_utils::ROBOT_COMMANDS_PRIMARY_CHANNEL, &handleRobotCommand);
-  auto pub = std::make_shared<roboteam_proto::Publisher<roboteam_proto::RobotCommand>>(roboteam_utils::ROBOT_COMMANDS_PRIMARY_CHANNEL);
+  auto sub = std::make_shared<proto::Subscriber<proto::RobotCommand>>(roboteam_utils::ROBOT_COMMANDS_PRIMARY_CHANNEL, &handleRobotCommand);
+  auto pub = std::make_shared<proto::Publisher<proto::RobotCommand>>(roboteam_utils::ROBOT_COMMANDS_PRIMARY_CHANNEL);
 
-  roboteam_proto::RobotCommand cmd;
+  proto::RobotCommand cmd;
   cmd.set_geneva_state(4);
 
   auto reference_time = roboteam_utils::Timer::getCurrentTime().count();
@@ -37,17 +37,17 @@ TEST(PubSubTest, function_subscription) {
 
 TEST(PubSubTest, method_subscription) {
   struct Dummy {
-    roboteam_proto::RobotCommand cmd;
-    std::shared_ptr<roboteam_proto::Subscriber<roboteam_proto::RobotCommand>> sub;
+    proto::RobotCommand cmd;
+    std::shared_ptr<proto::Subscriber<proto::RobotCommand>> sub;
     bool got_command = false;
     int receivedTime = 0;
 
     Dummy() {
-      const roboteam_proto::Channel DUMMY_CHANNEL = {"dummy_channel", "tcp://127.0.0.1:5555"};
-      sub = std::make_shared<roboteam_proto::Subscriber<roboteam_proto::RobotCommand>>(roboteam_utils::ROBOT_COMMANDS_PRIMARY_CHANNEL, &Dummy::handle_message, this);
+      const proto::Channel DUMMY_CHANNEL = {"dummy_channel", "tcp://127.0.0.1:5555"};
+      sub = std::make_shared<proto::Subscriber<proto::RobotCommand>>(roboteam_utils::ROBOT_COMMANDS_PRIMARY_CHANNEL, &Dummy::handle_message, this);
     }
 
-    void handle_message(roboteam_proto::RobotCommand & robotcommand) {
+    void handle_message(proto::RobotCommand & robotcommand) {
       cmd = robotcommand;
       receivedTime = robotcommand.id();
       got_command = true;
@@ -56,8 +56,8 @@ TEST(PubSubTest, method_subscription) {
 
   Dummy dummy;
   
-  auto pub = std::make_shared<roboteam_proto::Publisher<roboteam_proto::RobotCommand>>(roboteam_utils::ROBOT_COMMANDS_PRIMARY_CHANNEL);
-  roboteam_proto::RobotCommand cmd;
+  auto pub = std::make_shared<proto::Publisher<proto::RobotCommand>>(roboteam_utils::ROBOT_COMMANDS_PRIMARY_CHANNEL);
+  proto::RobotCommand cmd;
   cmd.set_geneva_state(2);
 
   auto reference_time = roboteam_utils::Timer::getCurrentTime().count();

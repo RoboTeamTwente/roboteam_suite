@@ -3,7 +3,7 @@
 
 #include <string>
 
-namespace roboteam_proto {
+namespace proto {
 
 struct Channel {
   std::string name;
@@ -17,6 +17,6 @@ struct Channel {
   bool operator != (const Channel & other);
 };
 
-}
+} // proto
 
 #endif //RTT_CHANNEL_H

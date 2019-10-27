@@ -3,7 +3,7 @@ syntax = "proto3";
 import "WorldBall.proto";
 import "WorldRobot.proto";
 
-package roboteam_proto;
+package proto;
 
 message World {
     uint64 time = 1;
