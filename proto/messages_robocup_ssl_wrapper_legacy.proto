@@ -1,5 +1,5 @@
 syntax = "proto3";
-package roboteam_proto.RoboCup2014Legacy.Wrapper;
+package proto.RoboCup2014Legacy.Wrapper;
 
 import "messages_robocup_ssl_detection.proto";
 import "messages_robocup_ssl_geometry_legacy.proto";

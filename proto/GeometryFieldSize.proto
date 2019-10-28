@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package roboteam_proto;
+package proto;
 
 import "FieldLineSegment.proto";
 import "FieldCircularArc.proto";

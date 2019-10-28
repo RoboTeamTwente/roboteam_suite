@@ -61,8 +61,7 @@ protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS
 add_library(roboteam_proto SHARED
         ${PROTO_SRCS}
         ${PROTO_HDRS}
-        src/Subscriber.cpp
-        src/Publisher.cpp )
+        src/Channel.cpp src/Channels.cpp include/roboteam_proto/Channels.h)
 
 # link the exe against the libraries
 target_link_libraries(roboteam_proto

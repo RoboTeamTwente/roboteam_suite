@@ -1,7 +1,7 @@
 syntax = "proto3";
 import "messages_robocup_ssl_geometry.proto";
 
-package roboteam_proto.RoboCup2014Legacy.Geometry;
+package proto.RoboCup2014Legacy.Geometry;
 
 message SSL_GeometryFieldSize {
   int32 line_width = 1;

@@ -7,17 +7,17 @@
 bool messageReceivedSuccesFully = false;
 double receivedTime = 0;
 
-void handleRobotCommand(roboteam_proto::RobotCommand & robot_command) {
+void handleRobotCommand(proto::RobotCommand & robot_command) {
   EXPECT_EQ(robot_command.geneva_state(), 4);
   receivedTime = robot_command.id();
   messageReceivedSuccesFully = true;
 }
 
 TEST(PubSubTest, function_subscription) {
-  auto sub = std::make_shared<roboteam_proto::Subscriber>("tcp://127.0.0.1:5555", "dummy_robotcommand_topic", &handleRobotCommand);
-  auto pub = std::make_shared<roboteam_proto::Publisher>("tcp://127.0.0.1:5555");
+  auto sub = std::make_shared<proto::Subscriber<proto::RobotCommand>>(proto::ROBOT_COMMANDS_PRIMARY_CHANNEL, &handleRobotCommand);
+  auto pub = std::make_shared<proto::Publisher<proto::RobotCommand>>(proto::ROBOT_COMMANDS_PRIMARY_CHANNEL);
 
-  roboteam_proto::RobotCommand cmd;
+  proto::RobotCommand cmd;
   cmd.set_geneva_state(4);
 
   auto reference_time = roboteam_utils::Timer::getCurrentTime().count();
@@ -27,27 +27,27 @@ TEST(PubSubTest, function_subscription) {
       ASSERT_TRUE(false); // it takes too long. test should fail instead of deadlock
     }
     cmd.set_id(roboteam_utils::Timer::getCurrentTime().count()); // we store the time in the id
-    pub->send("dummy_robotcommand_topic", cmd.SerializeAsString());
+    pub->send(cmd);
   }
 
-  // the communication should be fast (<5ms)
-  EXPECT_LE( roboteam_utils::Timer::getCurrentTime().count() - receivedTime,  5);
+  // the communication should be fast (<10ms)
+  EXPECT_LE( roboteam_utils::Timer::getCurrentTime().count() - receivedTime,  10);
 }
 
 
 TEST(PubSubTest, method_subscription) {
-
   struct Dummy {
-    roboteam_proto::RobotCommand cmd;
-    std::shared_ptr<roboteam_proto::Subscriber> sub;
+    proto::RobotCommand cmd;
+    std::shared_ptr<proto::Subscriber<proto::RobotCommand>> sub;
     bool got_command = false;
     int receivedTime = 0;
 
     Dummy() {
-      sub = std::make_shared<roboteam_proto::Subscriber>("tcp://127.0.0.1:5555", "dummy_robotcommand_topic", &Dummy::handle_message, this);
+      const proto::Channel DUMMY_CHANNEL = {"dummy_channel", "tcp://127.0.0.1:5555"};
+      sub = std::make_shared<proto::Subscriber<proto::RobotCommand>>(proto::ROBOT_COMMANDS_PRIMARY_CHANNEL, &Dummy::handle_message, this);
     }
 
-    void handle_message(roboteam_proto::RobotCommand & robotcommand) {
+    void handle_message(proto::RobotCommand & robotcommand) {
       cmd = robotcommand;
       receivedTime = robotcommand.id();
       got_command = true;
@@ -55,9 +55,9 @@ TEST(PubSubTest, method_subscription) {
   };
 
   Dummy dummy;
-
-  auto pub = std::make_shared<roboteam_proto::Publisher>("tcp://127.0.0.1:5555");
-  roboteam_proto::RobotCommand cmd;
+  
+  auto pub = std::make_shared<proto::Publisher<proto::RobotCommand>>(proto::ROBOT_COMMANDS_PRIMARY_CHANNEL);
+  proto::RobotCommand cmd;
   cmd.set_geneva_state(2);
 
   auto reference_time = roboteam_utils::Timer::getCurrentTime().count();
@@ -67,10 +67,10 @@ TEST(PubSubTest, method_subscription) {
       ASSERT_TRUE(false); // it takes too long. test should fail instead of deadlock
     }
     cmd.set_id(roboteam_utils::Timer::getCurrentTime().count()); // we store the time in the id
-    pub->send("dummy_robotcommand_topic", cmd.SerializeAsString());
+    pub->send(cmd);
   }
 
-  // the communication should be fast (<5ms)
-  EXPECT_LE( roboteam_utils::Timer::getCurrentTime().count() - dummy.receivedTime,  5);
+  // the communication should be fast (<10ms)
+  EXPECT_LE( roboteam_utils::Timer::getCurrentTime().count() - dummy.receivedTime,  10);
   EXPECT_EQ(dummy.cmd.geneva_state(), 2);
 }

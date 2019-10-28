@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package roboteam_proto;
+package proto;
 
 message GeometryCameraCalibration {
     uint32 camera_id = 1;

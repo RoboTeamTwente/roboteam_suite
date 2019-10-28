@@ -2,7 +2,7 @@ syntax = "proto3";
 
 import "Vector2f.proto";
 
-package roboteam_proto;
+package proto;
 
 message FieldCircularArc {
     string name = 1;
