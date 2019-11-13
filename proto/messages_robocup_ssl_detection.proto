@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package roboteam_proto;
+package proto;
 
 message SSL_DetectionBall {
   float  confidence = 1;

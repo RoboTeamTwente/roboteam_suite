@@ -1,7 +1,7 @@
 syntax = "proto3";
 import "Vector2f.proto";
 
-package roboteam_proto;
+package proto;
 
 // Represents a field marking as a line segment represented by a start point p1,
 // and end point p2, and a line thickness. The start and end points are along

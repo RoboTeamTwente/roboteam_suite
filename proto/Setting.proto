@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package roboteam_proto;
+package proto;
 
 message Setting {
     uint32 id = 1; // the id of the AI which this setting corresponds to

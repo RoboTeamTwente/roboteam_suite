@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package roboteam_proto;
+package proto;
 // a game event that caused a referee command
 message SSL_Referee_Game_Event {
 
