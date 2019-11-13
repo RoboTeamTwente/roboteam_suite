@@ -1,5 +1,5 @@
 syntax = "proto3";
-package roboteam_proto;
+package proto;
 message mimir_robotcommand {
     uint32 id = 1;
     bool teamIsYellow = 2;
