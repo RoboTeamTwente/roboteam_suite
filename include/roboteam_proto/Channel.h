@@ -14,6 +14,7 @@ struct Channel {
   Channel(std::string name, std::string ip, std::string port);
   Channel(const Channel & other);
 
+  std::string getAddress(const std::string & _ip, const std::string & _port);
   std::string getSubscribeAddress();
   std::string getPublishAddress();
 

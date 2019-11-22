@@ -50,13 +50,20 @@ class Subscriber {
    *
    * @param channel: the channel to subscribe to
    */
-  void init(const ChannelType & channelType) {
-      this->channel = CHANNELS.at(channelType);
-      std::cout << "[Roboteam_proto] Starting subscriber for " << channel.getSubscribeAddress() << std::endl;
+  void init(const ChannelType & channelType, std::string custom_ip = "") {
+    this->channel = CHANNELS.at(channelType);
     this->reactor = new zmqpp::reactor();
     this->socket = new zmqpp::socket(this->context, zmqpp::socket_type::sub);
     this->socket->subscribe("");
-    this->socket->connect(channel.getSubscribeAddress());
+
+    auto address = channel.getSubscribeAddress();
+    if (!custom_ip.empty()) {
+        std::cout << "[Roboteam_proto] Starting subscriber with custom IP: " << custom_ip << std::endl;
+        address = channel.getAddress(custom_ip, channel.port);
+    }
+
+      std::cout << "[Roboteam_proto] Starting subscriber for " << address << std::endl;
+    this->socket->connect(address);
     running = true;
   }
 
@@ -72,8 +79,8 @@ class Subscriber {
    * @param instance: the context of the method, i.e. a pointer to the class the method belongs to.
    */
   template <class T_Instance>
-  Subscriber(const ChannelType & channelType, void(T_Instance::*subscriberCallbackMethod)(T_Response & resp), T_Instance * instance) {
-    init(channelType);
+  Subscriber(const ChannelType & channelType, void(T_Instance::*subscriberCallbackMethod)(T_Response & resp), T_Instance * instance, std::string custom_ip = "") {
+    init(channelType, custom_ip);
 
     zmqpp::poller * poller = &reactor->get_poller();
     auto callback = [=](){
@@ -101,8 +108,8 @@ class Subscriber {
    * @param channel: the channel to subscribe to
    * @param resp: A function pointer to a callback taking a reference to the specified response type
    */
-  Subscriber(const ChannelType & channelType, void (*func)(T_Response & resp)) {
-      init(channelType);
+  Subscriber(const ChannelType & channelType, void (*func)(T_Response & resp), std::string custom_ip = "") {
+      init(channelType, custom_ip);
 
     zmqpp::poller * poller = &reactor->get_poller();
     auto callback = [=]() {
