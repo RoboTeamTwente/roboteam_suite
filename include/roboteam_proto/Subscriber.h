@@ -136,7 +136,7 @@ class Subscriber {
    * Then we safely close the socket and delete the pointers.
    */
   ~Subscriber() {
-    std::cout << "[Roboteam_proto] Stopping subscriber for " << channel.getSubscribeAddress() << std::endl;
+    std::cout << "[Roboteam_proto] Stopping subscriber for " << channel.name << std::endl;
     running = false;
     t1.join();
     reactor->remove(*socket);
