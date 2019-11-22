@@ -52,11 +52,11 @@ class Subscriber {
    */
   void init(const ChannelType & channelType) {
       this->channel = CHANNELS.at(channelType);
-      std::cout << "[Roboteam_proto] Starting subscriber for " << channel.name << std::endl;
+      std::cout << "[Roboteam_proto] Starting subscriber for " << channel.getSubscribeAddress() << std::endl;
     this->reactor = new zmqpp::reactor();
     this->socket = new zmqpp::socket(this->context, zmqpp::socket_type::sub);
     this->socket->subscribe("");
-    this->socket->connect(channel.port);
+    this->socket->connect(channel.getSubscribeAddress());
     running = true;
   }
 
@@ -129,7 +129,7 @@ class Subscriber {
    * Then we safely close the socket and delete the pointers.
    */
   ~Subscriber() {
-    std::cout << "[Roboteam_proto] Stopping subscriber for " << channel.name << std::endl;
+    std::cout << "[Roboteam_proto] Stopping subscriber for " << channel.getSubscribeAddress() << std::endl;
     running = false;
     t1.join();
     reactor->remove(*socket);

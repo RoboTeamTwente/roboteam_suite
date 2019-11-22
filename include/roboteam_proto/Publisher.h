@@ -41,16 +41,16 @@ class Publisher {
    */
   explicit Publisher(const ChannelType & channelType)
         : channel (CHANNELS.at(channelType)) {
-      std::cout << "[Roboteam_proto] Starting publisher for channel " << channel.name << std::endl;
+      std::cout << "[Roboteam_proto] Starting publisher for channel " << channel.getPublishAddress() << std::endl;
       socket = new zmqpp::socket(context, zmqpp::socket_type::pub);
-      socket->bind(channel.port);
+      socket->bind(channel.getPublishAddress());
   }
 
   /*
   * closes the socket before deleting the publisher
   */
   ~Publisher() {
-      std::cout << "[Roboteam_proto] Stopping publisher for channel " << channel.name << std::endl;
+      std::cout << "[Roboteam_proto] Stopping publisher for channel " << channel.getPublishAddress() << std::endl;
       socket->close();
       delete socket;
   }
