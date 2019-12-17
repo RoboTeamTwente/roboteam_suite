@@ -4,7 +4,6 @@
 #include <string>
 #include <zmqpp/zmqpp.hpp>
 #include <google/protobuf/message.h>
-#include <roboteam_utils/constants.h>
 #include "Channel.h"
 #include "Channels.h"
 
