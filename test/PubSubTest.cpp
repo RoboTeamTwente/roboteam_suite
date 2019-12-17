@@ -43,7 +43,7 @@ TEST(PubSubTest, method_subscription) {
     int receivedTime = 0;
 
     Dummy() {
-      const proto::Channel DUMMY_CHANNEL = {"dummy_channel", "tcp://127.0.0.1:5555"};
+      const proto::Channel DUMMY_CHANNEL = {"dummy_channel", "127.0.0.1", "5555"};
       sub = std::make_shared<proto::Subscriber<proto::RobotCommand>>(proto::ROBOT_COMMANDS_PRIMARY_CHANNEL, &Dummy::handle_message, this);
     }
 
