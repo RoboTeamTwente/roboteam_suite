@@ -47,6 +47,9 @@ protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS
         proto/grSim_Packet.proto
         proto/grSim_Replacement.proto
 
+        #mimir
+        proto/mimir_robotcommand.proto
+
         # ssl input packets
         proto/messages_robocup_ssl_detection.proto
         proto/messages_robocup_ssl_game_event.proto
