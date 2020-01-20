@@ -28,4 +28,4 @@ RUN /bin/bash -c "git clone https://github.com/google/googletest.git /opt/google
 RUN mkdir -p /opt/robotests
 COPY tests /opt/robotests
 COPY divider.sh /divider.sh
-# ENTRYPOINT [ "/divider.sh" ]
+ENTRYPOINT [ "/divider.sh" ]
