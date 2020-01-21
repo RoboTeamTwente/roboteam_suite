@@ -17,8 +17,8 @@ echo $2
 echo "Branch: "
 echo $1
 
-export CC="gcc"
-export CCX="g++"
+export CC="ccache /usr/bin/clang"
+export CCX="ccache /usr/bin/clang++"
 
 # Checks if the test for the repo exists
 if [[ ! -f "/opt/robotests/$2.sh" ]]; then

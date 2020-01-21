@@ -15,10 +15,10 @@ cd ..
 mkdir build
 cd build
 # Cmake generate build files
-cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Ninja" ..
+cmake ..
 # Cmake build
-cmake --build . --target ai_tests -- -j $(nproc)
+make -j $(nproc)
 echo "Finished compiling"
-cd roboteam_ai
 # Run tests, xvfb-run simulates an xserver
+cd roboteam_ai
 xvfb-run ./ai_tests

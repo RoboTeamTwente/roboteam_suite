@@ -12,6 +12,8 @@ RUN /bin/bash -c "apt-get dist-upgrade -y"
 RUN /bin/bash -c "apt-get -y install \
     libzmq3-dev \ 
     libzmqpp-dev \
+    clang \
+    ccache \
     xvfb \
     ninja-build \
     libarmadillo-dev \
