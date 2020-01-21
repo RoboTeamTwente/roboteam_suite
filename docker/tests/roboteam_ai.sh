@@ -1,19 +1,24 @@
 #!/bin/bash
 
-if [[ ! -f "/usr/local/lib/libgtest.a" ]]; then
-    echo "GTest does not exist!";
-fi
-
-git clone https://github.com/RoboTeamTwente/roboteam_suit /opt/roboteam/roboteam_suite --recurse-submodules
+# Cd into the suite
 cd /opt/roboteam/roboteam_suite
-git submodule update --init --recursive
+# Make sure every branch is on master
 git submodule foreach git checkout master
+# Pull each
+git submodule foreach git pull
+# Cd into correct rpeo
 cd roboteam_ai
+# Checkout branch name
 git checkout "$1"
+# Cd back and create + cd into build
 cd ..
 mkdir build
 cd build
+# Cmake generate build files
 cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Ninja" ..
-cmake --build . --target ai_tests -- -j 8
+# Cmake build
+cmake --build . --target ai_tests -- -j $(nproc)
+echo "Finished compiling"
 cd roboteam_ai
-./ai_tests
+# Run tests, xvfb-run simulates an xserver
+xvfb-run ./ai_tests
