@@ -43,6 +43,7 @@ running two teams:
 - ZeroMQ 4.2.5 (https://zeromq.org/)
 - zmqpp 4.1.2 (https://github.com/zeromq/zmqpp) 
 - Armadillo 9.6 (http://arma.sourceforge.net/)
+- Qt5 (https://qt.io/)
 
 
 ## Installation on Linux (tested on Ubuntu 18.04 Bionic Beaver)
