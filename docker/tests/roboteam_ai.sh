@@ -11,13 +11,11 @@ cd roboteam_ai
 # Checkout branch name
 git checkout "$1"
 # Cd back and create + cd into build
-cd ..
-mkdir build
-cd build
+cd ../build
 # Cmake generate build files
-cmake ..
+cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Ninja" ..
 # Cmake build
-make -j $(nproc)
+cmake --build . --target ai_tests -- -j $(nproc)
 echo "Finished compiling"
 # Run tests, xvfb-run simulates an xserver
 cd roboteam_ai
