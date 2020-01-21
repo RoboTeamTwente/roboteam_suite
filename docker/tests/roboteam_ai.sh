@@ -11,7 +11,9 @@ cd roboteam_ai
 # Checkout branch name
 git checkout "$1"
 # Cd back and create + cd into build
-cd ../build
+cd ..
+mkdir build
+cd build
 # Cmake generate build files
 cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Ninja" ..
 # Cmake build
