@@ -6,7 +6,7 @@ cd /opt/roboteam/roboteam_suite
 git submodule foreach git checkout master
 # Pull each
 git submodule foreach git pull
-# Cd into correct rpeo
+# Cd into correct repo
 cd roboteam_ai
 # Checkout branch name
 git checkout "$1"
