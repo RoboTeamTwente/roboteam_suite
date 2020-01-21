@@ -13,7 +13,6 @@ RUN /bin/bash -c "apt-get -y install \
     libzmq3-dev \ 
     libzmqpp-dev \
     clang \
-    ccache \
     xvfb \
     ninja-build \
     libarmadillo-dev \
@@ -62,4 +61,4 @@ COPY tests /opt/robotests
 # Copy over divider
 COPY divider.sh /divider.sh
 # Set the entrypoint for when your docker container runs
-# ENTRYPOINT [ "/divider.sh" ]
+ENTRYPOINT [ "/divider.sh" ]
