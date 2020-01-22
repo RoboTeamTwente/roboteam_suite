@@ -12,8 +12,9 @@
 # git checkout "$1"
 
 
+REPO_NAME=$(echo $2 | tr "/" "\n" | sed -n 2p)
 echo "Repo: "
-echo $2
+echo $REPO_NAME
 echo "Branch: "
 echo $1
 
@@ -28,4 +29,4 @@ if [[ ! -f "/opt/robotests/$2.sh" ]]; then
 fi
 
 # Runs the test for the repo
-bash "/opt/robotests/$2.sh" "$1"
+bash "/opt/robotests/$REPO_NAME.sh" "$1"

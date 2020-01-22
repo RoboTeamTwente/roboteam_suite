@@ -10,16 +10,16 @@ RUN /bin/bash -c "apt-get dist-upgrade -y"
 
 # Install dependencies
 RUN /bin/bash -c "apt-get -y install \
-    libzmq3-dev \ 
+    libzmq3-dev \
     libzmqpp-dev \
     ccache \
     clang \
     xvfb \
     ninja-build \
-    libarmadillo-dev \
     autoconf \
     automake \
     libtool \
+    libeigen3-dev \
     curl \
     make \
     g++ \
