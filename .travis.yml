@@ -4,16 +4,13 @@
 # but with caching this is not a large performance hit anyway.
 
 # Language C++, Ubuntu 18
-language: cpp
+os: linux
 dist: bionic
+language: cpp
 
 # Services require docker, docker already contains everything
 services:
   - docker
-
-# Disable git cloning cause we do that in docker
-git:
-  clone: false
 
 # This happens before your build
 before_install:
