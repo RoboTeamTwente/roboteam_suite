@@ -103,7 +103,9 @@ if(UNIX AND NOT APPLE)
     target_link_libraries(proto_tests
             PUBLIC roboteam_proto
             PUBLIC roboteam_utils
-            PRIVATE gcov)
+            PRIVATE gcov
+            PRIVATE gtest
+            )
 endif()
 
 target_include_directories(proto_tests
