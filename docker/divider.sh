@@ -23,7 +23,7 @@ export CXX=/usr/lib/ccache/clang++
 export CC=/usr/lib/ccache/clang
 
 # Checks if the test for the repo exists
-if [[ ! -f "/opt/robotests/$2.sh" ]]; then
+if [[ ! -f "/opt/robotests/$REPO_NAME.sh" ]]; then
     echo "No such test found."
     exit 1
 fi
