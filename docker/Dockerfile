@@ -12,6 +12,7 @@ RUN /bin/bash -c "apt-get dist-upgrade -y"
 RUN /bin/bash -c "apt-get -y install \
     libzmq3-dev \ 
     libzmqpp-dev \
+    ccache \
     clang \
     xvfb \
     ninja-build \
@@ -54,6 +55,8 @@ RUN /bin/bash -c "git clone https://github.com/RoboTeamTwente/roboteam_suite /op
     git submodule update --init --recursive &&\
     git submodule foreach git checkout master"
 
+# Create ccache folder
+RUN mkdir -p /opt/.ccache
 # Add tests to the container.
 RUN mkdir -p /opt/robotests
 # Copy over tests folder
