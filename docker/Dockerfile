@@ -11,6 +11,7 @@ RUN /bin/bash -c "apt-get dist-upgrade -y"
 # Install dependencies
 RUN /bin/bash -c "apt-get -y install \
     libzmq3-dev \
+    nlohmann-json-dev \
     libzmqpp-dev \
     ccache \
     clang \
@@ -54,6 +55,10 @@ RUN /bin/bash -c "git clone https://github.com/RoboTeamTwente/roboteam_suite /op
     cd /opt/roboteam/roboteam_suite &&\
     git submodule update --init --recursive &&\
     git submodule foreach git checkout master"
+
+# Get the voronoi header
+RUN /bin/bash -c "git clone https://github.com/JCash/voronoi.git /opt/voronoi &&\
+    mv /opt/voronoi/src/jc_voronoi.h /usr/include/jc_voronoi.h"
 
 # Create ccache folder
 RUN mkdir -p /opt/.ccache
