@@ -4,6 +4,25 @@ project(roboteam_proto)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -g -O0")
 SET(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")
 
+# Find programs and assign the boolean to the variables, find_program(variable binary)
+find_program(CCACHE ccache)
+find_program(GCC g++)
+find_program(CLANG clang++)
+
+# Some ccache logic
+if (CLANG)
+    set(CXX_COMPILER clang++)
+elseif (GCC)
+    set(CXX_COMPILER g++)
+endif()
+
+if (CCACHE)
+    set(CMAKE_CXX_COMPILER "/lib/ccache/bin/${CXX_COMPILER}")
+else()
+    set(CMAKE_CXX_COMPILER "/bin/${CXX_COMPILER}")
+endif()
+# end of ccache logic
+
 # find the protobuf compiler and libraries
 find_package(Protobuf 3.9.1 REQUIRED)
 find_package(zeroMQ REQUIRED)
