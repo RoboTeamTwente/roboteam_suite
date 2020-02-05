@@ -60,6 +60,10 @@ RUN /bin/bash -c "git clone https://github.com/RoboTeamTwente/roboteam_suite /op
 RUN /bin/bash -c "git clone https://github.com/JCash/voronoi.git /opt/voronoi &&\
     mv /opt/voronoi/src/jc_voronoi.h /usr/include/jc_voronoi.h"
 
+# Set ccache symbolic link
+RUN mkdir -p /lib/ccache
+# Set symbolic link
+RUN ln -s /usr/lib/ccache /lib/ccache/bin
 # Create ccache folder
 RUN mkdir -p /opt/.ccache
 # Add tests to the container.
