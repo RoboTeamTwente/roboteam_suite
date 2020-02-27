@@ -86,7 +86,7 @@ protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS
         )
 
 # Add an executable
-add_library(roboteam_proto SHARED
+add_library(roboteam_proto STATIC
         ${PROTO_SRCS}
         ${PROTO_HDRS}
         src/Channel.cpp src/Channels.cpp include/roboteam_proto/Channels.h)
@@ -97,6 +97,7 @@ target_link_libraries(roboteam_proto
         # since Publishers/subscribers are templates these 2 libraries need to be PUBLIC
         PUBLIC ${ZeroMQ_LIBRARIES}
         PUBLIC ${ZMQPP_LIBRARIES}
+        PUBLIC roboteam_utils
         )
 
 target_include_directories(roboteam_proto

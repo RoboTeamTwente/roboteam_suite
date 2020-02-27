@@ -6,6 +6,7 @@
 #include <google/protobuf/message.h>
 #include "Channel.h"
 #include "Channels.h"
+#include <roboteam_utils/Print.h>
 
 namespace proto {
 
@@ -40,7 +41,7 @@ class Publisher {
    */
   explicit Publisher(const ChannelType & channelType)
         : channel (CHANNELS.at(channelType)) {
-      std::cout << "[Roboteam_proto] Starting publisher for channel " << channel.getPublishAddress() << std::endl;
+      rtt_info("Starting publisher for channel " + channel.getPublishAddress());
       socket = new zmqpp::socket(context, zmqpp::socket_type::pub);
       socket->bind(channel.getPublishAddress());
   }
@@ -49,7 +50,7 @@ class Publisher {
   * closes the socket before deleting the publisher
   */
   ~Publisher() {
-      std::cout << "[Roboteam_proto] Stopping publisher for channel " << channel.getPublishAddress() << std::endl;
+      rtt_info("Stopping publisher for channel " + channel.getPublishAddress());
       socket->close();
       delete socket;
   }
