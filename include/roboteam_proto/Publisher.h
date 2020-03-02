@@ -41,7 +41,6 @@ class Publisher {
    */
   explicit Publisher(const ChannelType & channelType)
         : channel (CHANNELS.at(channelType)) {
-      rtt_info("Starting publisher for channel " + channel.getPublishAddress());
       socket = new zmqpp::socket(context, zmqpp::socket_type::pub);
       socket->bind(channel.getPublishAddress());
   }
@@ -50,7 +49,6 @@ class Publisher {
   * closes the socket before deleting the publisher
   */
   ~Publisher() {
-      rtt_info("Stopping publisher for channel " + channel.getPublishAddress());
       socket->close();
       delete socket;
   }

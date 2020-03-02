@@ -58,10 +58,8 @@ class Subscriber {
 
     auto address = channel.getSubscribeAddress();
     if (!custom_ip.empty()) {
-        rtt_info("Starting subscriber with custom IP: " + custom_ip);
         address = channel.getAddress(custom_ip, channel.port);
     }
-    rtt_info("Starting subscriber for " + address);
 
     this->socket->connect(address);
     running = true;
@@ -92,7 +90,7 @@ class Subscriber {
         if (output.ParseFromString(response.get(0))) {
           (instance->*subscriberCallbackMethod)(output); // call the subscriberCallback function
         } else {
-            rtt_warning("Received faulty packet!");
+            std::cerr << "Received faulty packet!" << std::endl;
         }
       }
     };
@@ -121,7 +119,7 @@ class Subscriber {
         if (output.ParseFromString(response.get(0))) {
           func(output); // call the subscriberCallback function
         } else {
-            rtt_warning("Received faulty packet!");
+            std::cerr << "Received faulty packet!" << std::endl;
         }
       }
     };
@@ -136,8 +134,6 @@ class Subscriber {
    * Then we safely close the socket and delete the pointers.
    */
   ~Subscriber() {
-    rtt_info("Stopping subscriber for " + channel.name);
-
     running = false;
     t1.join();
     reactor->remove(*socket);
