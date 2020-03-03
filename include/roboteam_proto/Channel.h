@@ -21,7 +21,7 @@ struct Channel {
   bool operator == (const Channel & other);
   bool operator != (const Channel & other);
 
-  std::string toInfoString();
+  std::string toInfoString(bool isPublisher);
 };
 
 } // proto

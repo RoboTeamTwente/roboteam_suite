@@ -61,7 +61,7 @@ class Subscriber {
         RTT_INFO("Starting roboteam_proto subscriber with custom IP: ", custom_ip);
         address = channel.getAddress(custom_ip, channel.port);
     }
-    RTT_INFO("Starting roboteam_proto subscriber for channel ", channel.toInfoString());
+    RTT_INFO("Starting roboteam_proto subscriber for channel ", channel.toInfoString(false));
     this->socket->connect(address);
     running = true;
   }
@@ -91,7 +91,7 @@ class Subscriber {
         if (output.ParseFromString(response.get(0))) {
           (instance->*subscriberCallbackMethod)(output); // call the subscriberCallback function
         } else {
-            RTT_WARNING("Received faulty protobuf packet in channel ", channel.toInfoString());
+            RTT_WARNING("Received faulty protobuf packet in channel ", channel.toInfoString(false));
         }
       }
     };
@@ -120,7 +120,7 @@ class Subscriber {
         if (output.ParseFromString(response.get(0))) {
           func(output); // call the subscriberCallback function
         } else {
-            RTT_WARNING("Received faulty protobuf packet in channel ", channel.toInfoString());
+            RTT_WARNING("Received faulty protobuf packet in channel ", channel.toInfoString(false));
         }
       }
     };
@@ -135,7 +135,7 @@ class Subscriber {
    * Then we safely close the socket and delete the pointers.
    */
   ~Subscriber() {
-    RTT_INFO("Stopping roboteam_proto subscriber for ", channel.toInfoString());
+    RTT_INFO("Stopping roboteam_proto subscriber for ", channel.toInfoString(false));
     running = false;
     t1.join();
     reactor->remove(*socket);
