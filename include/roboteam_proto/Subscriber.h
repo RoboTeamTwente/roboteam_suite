@@ -58,7 +58,7 @@ class Subscriber {
 
     auto address = channel.getSubscribeAddress();
     if (!custom_ip.empty()) {
-        rtt_info("Starting subscriber with custom IP: ", custom_ip);
+        RTT_INFO("Starting subscriber with custom IP: ", custom_ip);
         address = channel.getAddress(custom_ip, channel.port);
     }
     rtt_info("Starting subscriber for channel ", channel.toInfoString());
@@ -91,7 +91,7 @@ class Subscriber {
         if (output.ParseFromString(response.get(0))) {
           (instance->*subscriberCallbackMethod)(output); // call the subscriberCallback function
         } else {
-            rtt_warning("Received faulty packet in channel ", channel.toInfoString());
+            RTT_WARNING("Received faulty packet in channel ", channel.toInfoString());
         }
       }
     };
@@ -120,7 +120,7 @@ class Subscriber {
         if (output.ParseFromString(response.get(0))) {
           func(output); // call the subscriberCallback function
         } else {
-            rtt_warning("Received faulty packet in channel ", channel.toInfoString());
+            RTT_WARNING("Received faulty packet in channel ", channel.toInfoString());
         }
       }
     };
@@ -135,7 +135,7 @@ class Subscriber {
    * Then we safely close the socket and delete the pointers.
    */
   ~Subscriber() {
-    rtt_info("Stopping roboteam_proto subscriber for ", channel.toInfoString());
+    RTT_INFO("Stopping roboteam_proto subscriber for ", channel.toInfoString());
     running = false;
     t1.join();
     reactor->remove(*socket);

@@ -43,14 +43,14 @@ class Publisher {
         : channel (CHANNELS.at(channelType)) {
       socket = new zmqpp::socket(context, zmqpp::socket_type::pub);
       socket->bind(channel.getPublishAddress());
-      rtt_info("Started roboteam_proto publisher for channel ", channel.toInfoString());
+      RTT_INFO("Started roboteam_proto publisher for channel ", channel.toInfoString());
   }
 
   /*
   * closes the socket before deleting the publisher
   */
   ~Publisher() {
-      rtt_info("Stopping publisher for channel ", channel.toInfoString());
+      RTT_INFO("Stopping publisher for channel ", channel.toInfoString());
       socket->close();
       delete socket;
   }
