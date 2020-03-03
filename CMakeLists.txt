@@ -73,6 +73,7 @@ add_library(roboteam_proto STATIC
 target_link_libraries(roboteam_proto
         PUBLIC ${PROTOBUF_LIBRARIES}
         # since Publishers/subscribers are templates these 2 libraries need to be PUBLIC
+        PUBLIC roboteam_utils
         PUBLIC ${ZeroMQ_LIBRARIES}
         PUBLIC ${ZMQPP_LIBRARIES}
         )
