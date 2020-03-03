@@ -41,9 +41,9 @@ class Publisher {
    */
   explicit Publisher(const ChannelType & channelType)
         : channel (CHANNELS.at(channelType)) {
+      RTT_INFO("Starting roboteam_proto publisher for channel ", channel.toInfoString());
       socket = new zmqpp::socket(context, zmqpp::socket_type::pub);
       socket->bind(channel.getPublishAddress());
-      RTT_INFO("Started roboteam_proto publisher for channel ", channel.toInfoString());
   }
 
   /*
