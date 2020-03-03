@@ -27,3 +27,11 @@ std::string proto::Channel::getPublishAddress() {
 std::string proto::Channel::getAddress(const std::string & _ip, const std::string & _port) {
     return "tcp://" + _ip + ":" + _port;
 }
+
+std::string proto::Channel::toInfoString(bool isPublisher) {
+    if (isPublisher) {
+        return "\"" + name + "\"" + " at address: " + getPublishAddress();
+
+    }
+    return "\"" + name + "\"" + " at address: " + getSubscribeAddress();
+}

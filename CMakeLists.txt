@@ -4,30 +4,8 @@ project(roboteam_proto)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -g -O0")
 SET(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")
 
-# Find programs and assign the boolean to the variables, find_program(variable binary)
-find_program(CCACHE ccache)
-find_program(GCC g++)
-find_program(CLANG clang++)
-
-# Some ccache logic
-if (CLANG)
-    set(CXX_COMPILER clang++)           # Set the compiler
-    set(CXX_COMPILER_PATH ${CLANG})     # Set the path of the compiler, for if ccache not is used
-elseif (GCC)
-    set(CXX_COMPILER g++)               # Set the compiler
-    set(CXX_COMPILER_PATH ${GCC})       # Set the path of the compiler, for if ccache not is used
-endif()
-
-if(CCACHE)
-    if(APPLE)
-        set(CMAKE_CXX_COMPILER "/usr/local/Cellar/ccache/3.7.7/libexec/${CXX_COMPILER}")
-    else()
-        set(CMAKE_CXX_COMPILER "/lib/ccache/bin/${CXX_COMPILER}")
-    endif()
-else()
-    set(CMAKE_CXX_COMPILER "${CXX_COMPILER_PATH}")
-endif()
-# end of ccache logic
+include(ccache)
+include(cotire)
 
 # find the protobuf compiler and libraries
 find_package(Protobuf 3.9.1 REQUIRED)
@@ -97,7 +75,6 @@ target_link_libraries(roboteam_proto
         # since Publishers/subscribers are templates these 2 libraries need to be PUBLIC
         PUBLIC ${ZeroMQ_LIBRARIES}
         PUBLIC ${ZMQPP_LIBRARIES}
-        PUBLIC roboteam_utils
         )
 
 target_include_directories(roboteam_proto

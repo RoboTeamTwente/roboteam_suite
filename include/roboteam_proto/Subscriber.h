@@ -8,7 +8,6 @@
 #include <zmqpp/reactor.hpp>
 #include <google/protobuf/message.h>
 #include <functional>
-#include <roboteam_utils/Print.h>
 #include "Channel.h"
 #include "Channels.h"
 
@@ -58,11 +57,10 @@ class Subscriber {
 
     auto address = channel.getSubscribeAddress();
     if (!custom_ip.empty()) {
-        rtt_info("Starting subscriber with custom IP: " + custom_ip);
+        std::cout << "Starting roboteam_proto subscriber with custom IP: " << custom_ip << std::endl;
         address = channel.getAddress(custom_ip, channel.port);
     }
-    rtt_info("Starting subscriber for " + address);
-
+    std::cout << "Starting roboteam_proto subscriber for channel " << channel.toInfoString(false) << std::endl;
     this->socket->connect(address);
     running = true;
   }
@@ -92,7 +90,7 @@ class Subscriber {
         if (output.ParseFromString(response.get(0))) {
           (instance->*subscriberCallbackMethod)(output); // call the subscriberCallback function
         } else {
-            rtt_warning("Received faulty packet!");
+            std::cerr << "Received faulty protobuf packet in channel " << channel.toInfoString(false) << std::endl;
         }
       }
     };
@@ -121,7 +119,7 @@ class Subscriber {
         if (output.ParseFromString(response.get(0))) {
           func(output); // call the subscriberCallback function
         } else {
-            rtt_warning("Received faulty packet!");
+            std::cerr << "Received faulty protobuf packet in channel " << channel.toInfoString(false) << std::endl;
         }
       }
     };
@@ -136,8 +134,7 @@ class Subscriber {
    * Then we safely close the socket and delete the pointers.
    */
   ~Subscriber() {
-    rtt_info("Stopping subscriber for " + channel.name);
-
+    std::cout << "Stopping roboteam_proto subscriber for channel " << channel.toInfoString(false) << std::endl;
     running = false;
     t1.join();
     reactor->remove(*socket);
