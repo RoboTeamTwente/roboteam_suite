@@ -50,7 +50,7 @@ class Publisher {
   * closes the socket before deleting the publisher
   */
   ~Publisher() {
-      RTT_INFO("Stopping publisher for channel ", channel.toInfoString());
+      RTT_INFO("Stopping roboteam_proto publisher for channel ", channel.toInfoString());
       socket->close();
       delete socket;
   }

@@ -29,5 +29,5 @@ std::string proto::Channel::getAddress(const std::string & _ip, const std::strin
 }
 
 std::string proto::Channel::toInfoString() {
-    return name + " at address: " + getAddress(ip, port);
+    return "\"" + name + "\"" + " at address: " + getAddress(ip, port);
 }

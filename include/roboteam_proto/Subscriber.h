@@ -58,10 +58,10 @@ class Subscriber {
 
     auto address = channel.getSubscribeAddress();
     if (!custom_ip.empty()) {
-        RTT_INFO("Starting subscriber with custom IP: ", custom_ip);
+        RTT_INFO("Starting roboteam_proto subscriber with custom IP: ", custom_ip);
         address = channel.getAddress(custom_ip, channel.port);
     }
-    rtt_info("Starting subscriber for channel ", channel.toInfoString());
+    RTT_INFO("Starting roboteam_proto subscriber for channel ", channel.toInfoString());
     this->socket->connect(address);
     running = true;
   }
@@ -91,7 +91,7 @@ class Subscriber {
         if (output.ParseFromString(response.get(0))) {
           (instance->*subscriberCallbackMethod)(output); // call the subscriberCallback function
         } else {
-            RTT_WARNING("Received faulty packet in channel ", channel.toInfoString());
+            RTT_WARNING("Received faulty protobuf packet in channel ", channel.toInfoString());
         }
       }
     };
@@ -120,7 +120,7 @@ class Subscriber {
         if (output.ParseFromString(response.get(0))) {
           func(output); // call the subscriberCallback function
         } else {
-            RTT_WARNING("Received faulty packet in channel ", channel.toInfoString());
+            RTT_WARNING("Received faulty protobuf packet in channel ", channel.toInfoString());
         }
       }
     };
