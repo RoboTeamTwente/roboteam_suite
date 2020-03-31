@@ -2,19 +2,6 @@
 
 # Cd into the suite
 cd /opt/roboteam/roboteam_suite
-# Make sure every branch is on master, except for roboteam utils
-cd roboteam_ai
-git checkout master
-
-cd ../roboteam_world
-git checkout master
-
-cd ../roboteam_proto
-git checkout master
-
-cd ../roboteam_robothub
-git checkout master
-
 # Pull each
 git submodule foreach git pull
 # Cd into correct repo
