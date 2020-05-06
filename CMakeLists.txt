@@ -55,6 +55,7 @@ protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS
 
         # ssl input packets
         proto/messages_robocup_ssl_detection.proto
+        proto/messages_robocup_ssl_game_controller_common.proto
         proto/messages_robocup_ssl_game_event.proto
         proto/messages_robocup_ssl_geometry.proto
         proto/messages_robocup_ssl_geometry_legacy.proto
