@@ -5,7 +5,7 @@ proto::Channel::Channel(std::string name, std::string ip, std::string port)
   { }
 
 proto::Channel::Channel(const proto::Channel & other)
-  : name(other.name), port(other.port), ip(other.ip)
+  : name(other.name), ip(other.ip), port(other.port)
   { }
 
 bool proto::Channel::operator==(const proto::Channel &other) {
