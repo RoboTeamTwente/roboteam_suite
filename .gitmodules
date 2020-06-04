@@ -25,3 +25,7 @@
 [submodule "thirdparty/stx"]
 	path = thirdparty/stx
 	url = https://github.com/lamarrr/STX.git
+[submodule "thirdparty/nfparam"]
+	path = thirdparty/nfparam
+	url = https://github.com/spotify/NFParam.git
+
