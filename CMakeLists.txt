@@ -8,20 +8,22 @@ include(${CMAKE_ROOT}/Modules/ExternalProject.cmake)
 
 ExternalProject_Add(sdl2
         SOURCE_DIR ${CMAKE_SOURCE_DIR}/thirdparty/sdl2
-        DOWNLOAD_COMMAND ""
-        UPDATE_COMMAND ""
-        CMAKE_ARGS
-
-        INSTALL_COMMAND ""
         )
 
 ExternalProject_Add(eigen3
         SOURCE_DIR ${CMAKE_SOURCE_DIR}/thirdparty/eigen3
-        DOWNLOAD_COMMAND ""
-        UPDATE_COMMAND ""
-        CMAKE_ARGS
+        )
 
-        INSTALL_COMMAND ""
+ExternalProject_Add(armadillo
+        SOURCE_DIR ${CMAKE_SOURCE_DIR}/thirdparty/armadillo
+        )
+
+ExternalProject_Add(nfparam
+        SOURCE_DIR ${CMAKE_SOURCE_DIR}/thirdparty/nfparam
+        )
+
+ExternalProject_Add(stx
+        SOURCE_DIR ${CMAKE_SOURCE_DIR}/thirdparty/stx
         )
 
 add_subdirectory(thirdparty/gtest)

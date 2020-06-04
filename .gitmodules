@@ -13,21 +13,21 @@
 [submodule "roboteam_proto"]
 	path = roboteam_proto
 	url = https://github.com/RoboTeamTwente/roboteam_proto
-; [submodule "thirdparty/sdl2"]
-; 	path = thirdparty/sdl2
-; 	url = https://github.com/davidsiaw/SDL2.git
-; [submodule "thirdparty/gtest"]
-; 	path = thirdparty/gtest
-; 	url = https://github.com/google/googletest.git
-; [submodule "thirdparty/eigen3"]
-; 	path = thirdparty/eigen3
-; 	url = https://gitlab.com/libeigen/eigen.git
-; [submodule "thirdparty/stx"]
-; 	path = thirdparty/stx
-; 	url = https://github.com/lamarrr/STX.git
-; [submodule "thirdparty/nfparam"]
-; 	path = thirdparty/nfparam
-; 	url = https://github.com/spotify/NFParam.git
-; [submodule "thirdparty/armadillo"]
-; 	path = thirdparty/armadillo
-; 	url = https://gitlab.com/conradsnicta/armadillo-code.git
+[submodule "thirdparty/gtest"]
+	path = thirdparty/gtest
+	url = https://github.com/google/googletest.git
+[submodule "thirdparty/sdl2"]
+	path = thirdparty/sdl2
+	url = https://github.com/davidsiaw/SDL2.git
+[submodule "thirdparty/eigen3"]
+	path = thirdparty/eigen3
+	url = https://gitlab.com/libeigen/eigen.git
+[submodule "thirdparty/armadillo"]
+	path = thirdparty/armadillo
+	url = https://gitlab.com/conradsnicta/armadillo-code.git
+[submodule "thirdparty/nfparam"]
+	path = thirdparty/nfparam
+	url = https://github.com/spotify/NFParam.git
+[submodule "thirdparty/stx"]
+	path = thirdparty/stx
+	url = https://github.com/lamarrr/STX.git
