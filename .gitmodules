@@ -28,4 +28,6 @@
 [submodule "thirdparty/nfparam"]
 	path = thirdparty/nfparam
 	url = https://github.com/spotify/NFParam.git
-
+[submodule "thirdparty/armadillo"]
+	path = thirdparty/armadillo
+	url = https://gitlab.com/conradsnicta/armadillo-code.git
