@@ -10,8 +10,12 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -fPIE -Wall -Wextra -O3")
 
 # external libraries
+# stx
 set(STX_BUILD_SHARED 1)
 add_subdirectory(thirdparty/stx)
+
+# sdl2, since currently broken in ubuntu libs
+add_subdirectory(thirdparty/sdl2)
 
 # internal projects
 add_subdirectory(roboteam_proto)
