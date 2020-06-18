@@ -1,9 +1,19 @@
 cmake_minimum_required(VERSION 3.10)
 project(rtt)
 
-set(CMAKE_CXX_FLAGS_DEBUG "-std=c++17 ${CMAKE_CXX_FLAGS} -Wall -Wextra -fPIE -O1")
-set(CMAKE_CXX_FLAGS_RELEASE "-std=c++17 ${CMAKE_CXX_FLAGS} -fPIE -Wall -Wextra -Werror -O1")
 
+set(CMAKE_CXX_STANDARD 17) # -std=c++17
+set(CMAKE_CXX_STANDARD_REQUIRED ON) # -std=c++17 required
+set(CMAKE_POSITION_INDEPENDENT_CODE ON) # -fPic
+
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -fPIE -Wall -Wextra -O3")
+
+# external libraries
+set(STX_BUILD_SHARED 1)
+add_subdirectory(thirdparty/stx)
+
+# internal projects
 add_subdirectory(roboteam_proto)
 add_subdirectory(roboteam_utils)
 add_subdirectory(roboteam_ai)
