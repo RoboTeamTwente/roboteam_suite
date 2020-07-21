@@ -1,23 +1,28 @@
 # roboteam_suite
-All relevant roboteamtwente repositories in one.
-
-
-# See also
-
-Running with camera's and real robots:
-SSL-Vision (https://github.com/RoboCup-SSL/ssl-vision)
-
-Working with a referee
-[SSL-Game-controller](https://github.com/RoboCup-SSL/ssl-game-controller)
-[SSL-vision-client](https://github.com/RoboCup-SSL/ssl-vision-client)
-
-Working with the grSim simulator
-[grSim](https://github.com/RoboTeamTwente/grSim) 
-
+This repo contains:
+- Roboteam AI, which listens to Roboteam World and makes decisions on what the robots should do based on the vision data.
+- Roboteam World, which interprets vision data (received from GRSim, or from a physical camera)
+- Roboteam Robothub, used to send commands to the robots (either through GRSim or the base station)
+- Roboteam Utils, which contains a lot of helper functions, primarily geometrical in nature, such as Lines, Triangles, etc. These are used in other repo's, such as Roboteam AI and Roboteam World
+- Roboteam Proto, which contains the protocol used to send and receive messages over TCP/UDP 
 
 # Usage
-Easiest way to run the application is to make some [compound executables](https://www.jetbrains.com/help/clion/run-debug-configuration.html#config-folders) in CLion that boot everything you need. To run 1 team in GRSim, the simulator, you will need to add roboteam_ai, roboteam_world, and roboteam_robothub. 
+First, clone this repository. We recommed using an SSH key if you are able to do so, as this immediately authorizes your future pushes to the repositories. 
+```
+git clone --recurse-submodule git@github.com:RoboTeamTwente/roboteam_suite.git
+```
+Now, you can open the roboteam_suite project with an IDE of your choice. We recommed CLion, as it has a lot of very helpful features and you can get a student license for it. 
+
+Make sure you have CMake installed. Go the CMakeLists.txt and click on it. CLion will generate a pop-up saying "project files not loaded" in blue in the top right corner. Clicking it will have CMake load the files. This means it generates instructions on how the files should be compiled in order to produce the executables specified in the CMakeLists.txt file. You can now compile the targets!
+
+The easiest way to run the application is to make some [compound executables](https://www.jetbrains.com/help/clion/run-debug-configuration.html#config-folders) in CLion that boot everything you need. To run 1 team in GRSim, the simulator, you will need to add roboteam_ai, roboteam_world, and roboteam_robothub. 
 Make sure you have grsim or ssl-vision running and are listening to the right ports. In general, the GRSim vision multicast port should be set to 10006.
+
+## Detailed guide: 
+### One Team: 
+
+![Run configuration for 1 team](https://github.com/RoboTeamTwente/roboteam_suite/blob/RobotJesse-patch-1/readme_images/one_team_config.png?raw=true)
+![Run configuration for 2 teams](https://github.com/RoboTeamTwente/roboteam_suite/blob/RobotJesse-patch-1/readme_images/two_team_config.png?raw=true)
 
 
 
@@ -99,4 +104,17 @@ $ cmake ../
 $ cmake --build .
 $ cmake --build . --target install
 ```
+
+
+# See also
+
+Running with camera's and real robots:
+SSL-Vision (https://github.com/RoboCup-SSL/ssl-vision)
+
+Working with a referee
+[SSL-Game-controller](https://github.com/RoboCup-SSL/ssl-game-controller)
+[SSL-vision-client](https://github.com/RoboCup-SSL/ssl-vision-client)
+
+Working with the grSim simulator
+[grSim](https://github.com/RoboTeamTwente/grSim) 
 
