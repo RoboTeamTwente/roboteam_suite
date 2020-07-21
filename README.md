@@ -8,43 +8,28 @@ Running with camera's and real robots:
 SSL-Vision (https://github.com/RoboCup-SSL/ssl-vision)
 
 Working with a referee
-SSL-Game-controller (https://github.com/RoboCup-SSL/ssl-game-controller)
-SSL-vision-client (https://github.com/RoboCup-SSL/ssl-vision-client)
+[SSL-Game-controller](https://github.com/RoboCup-SSL/ssl-game-controller)
+[SSL-vision-client](https://github.com/RoboCup-SSL/ssl-vision-client)
 
 Working with the grSim simulator
-grSim (https://github.com/RoboTeamTwente/grSim) 
+[grSim](https://github.com/RoboTeamTwente/grSim) 
 
 
 # Usage
-Easiest way to run things is to make some compound executables in CLion that boot everything you need. Make sure you have grsim or ssl-vision running and are listening to the right ports.
+Easiest way to run the application is to make some [compound executables](https://www.jetbrains.com/help/clion/run-debug-configuration.html#config-folders) in CLion that boot everything you need. To run 1 team in GRSim, the simulator, you will need to add roboteam_ai, roboteam_world, and roboteam_robothub. 
+Make sure you have grsim or ssl-vision running and are listening to the right ports. In general, the GRSim vision multicast port should be set to 10006.
 
-
-running one team:
-```
-./kalman_world
-./roboteam_ai
-./roboteam_robothub 
-```
-running two teams:
-```
-./kalman_world
-./roboteam_ai
-./roboteam_robothub 
-./roboteam_ai 1
-./roboteam_robothub 1
-```
 
 
 # Installation
 ## List of dependencies
 
-- CMake 3.10
-- Protobuf 3.9.1 (https://developers.google.com/protocol-buffers/)
-- ZeroMQ 4.2.5 (https://zeromq.org/)
-- zmqpp 4.1.2 (https://github.com/zeromq/zmqpp) 
-- Armadillo 9.6 (http://arma.sourceforge.net/)
-- Pagmo 2.16 (https://esa.github.io/pagmo2)
-
+- [CMake 3.10](https://cmake.org/)
+- [Protobuf 3.9.1](https://developers.google.com/protocol-buffers/)
+- [ZeroMQ 4.2.5](https://zeromq.org/)
+- [zmqpp 4.1.2](https://github.com/zeromq/zmqpp) 
+- [Armadillo 9.6](http://arma.sourceforge.net/)
+- [Eigen3 3.3.7-2](http://eigen.tuxfamily.org/index.php?title=Main_Page)
 ## Installation on Linux (tested on Ubuntu 18.04 Bionic Beaver)
 
 ### Install protobuf 3.9.1
@@ -68,26 +53,13 @@ $ sudo ldconfig # refresh shared library cache.
 $ sudo apt-get install libzmq3-dev libzmqpp-dev
 ```
 
-### install Armadillo
+### Install Armadillo
 ```
 sudo apt-get install libarmadillo-dev
 ```
 
-### Install Pagmo
-Before installing make sure you have TBB, the intel threading library, installed via apt
-```
-$ sudo apt install libtbb-dev
-$ git clone https://github.com/esa/pagmo2.git
-$ cd /path/to/pagmo
-$ mkdir build
-$ cd build
 
-$ cmake ../
-$ cmake --build .
-$ cmake --build . --target install
-```
-
-## installation on macOS (tested on macOS 10.14 Mojave)
+## Installation on macOS (tested on macOS 10.14 Mojave)
 Make sure you already have the following:
 - CMake (3.10 or higher)
 - HomeBrew
@@ -111,4 +83,20 @@ This will make sure that the code is formatted during every commit from then on.
 - Working directory: '$FilePath$'
 3. Click on OK, OK
 4. If you now right click a folder in your Project Tree and go to External Tools then you can click on clang-format which will format the entire folder (not this unfortunately does not yet work on single files).
+
+## Optional Libraries:
+### Install Pagmo
+Pagmo is an optimization library. It has some nice features to explore. 
+Before installing make sure you have TBB, the intel threading library, installed via apt
+```
+$ sudo apt install libtbb-dev
+$ git clone https://github.com/esa/pagmo2.git
+$ cd /path/to/pagmo
+$ mkdir build
+$ cd build
+
+$ cmake ../
+$ cmake --build .
+$ cmake --build . --target install
+```
 
