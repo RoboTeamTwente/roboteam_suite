@@ -25,19 +25,19 @@ The easiest way to run the application is to make some [compound executables](ht
 Make sure you have GRSim or ssl-vision running and are listening to the right ports. In general, the GRSim vision multicast port should be set to 10006.
 
 ## Detailed guide: 
-First, make sure you have installed GRSim using the instructions found on the [GRSim fork of RoboTeam](https://github.com/RoboTeamTwente/grSim). Now exectuble the grsim binary from the command line. This usually looks like this:
+First, make sure you have installed GRSim using the instructions found on the [RoboTeam fork of GRSim](https://github.com/RoboTeamTwente/grSim). Now exectuble the grsim binary from the command line. This usually looks like this:
 ```
 /directory_you_cloned_grsim_into/grSim/bin/grsim
 ```
 
 ### One Team: 
 Make the compound executable shown below:
-![Run configuration for 1 team](https://github.com/RoboTeamTwente/roboteam_suite/blob/RobotJesse-patch-1/readme_images/one_team_config.png?raw=true)
+![Run configuration for 1 team](https://github.com/RoboTeamTwente/roboteam_suite/blob/RobotJesse-patch-1/readme_images/run_one_team.png?raw=true)
 Then run this and 
 
 ### Two Teams:
 Follow the steps used for the other compound executable, only now add 2 extra targets: roboteam_ai_1 and roboteam_robothub_1, as seen in the screenshot, to the compound. While creating the new CMake Targets, be sure to include a "1" in the program arguments, as seen in the image.
-![Run configuration for 2 teams](https://github.com/RoboTeamTwente/roboteam_suite/blob/RobotJesse-patch-1/readme_images/two_team_config.png?raw=true)
+![Run configuration for 2 teams](https://github.com/RoboTeamTwente/roboteam_suite/blob/RobotJesse-patch-1/readme_images/run_two_teams.png?raw=true)
 
 
 
