@@ -49,6 +49,7 @@ Follow the steps used for the other compound executable, only now add 2 extra ta
 - [ZeroMQ 4.2.5](https://zeromq.org/)
 - [zmqpp 4.1.2](https://github.com/zeromq/zmqpp) 
 - [Eigen3 3.3.7-2](http://eigen.tuxfamily.org/index.php?title=Main_Page)
+- [QT5](https://wiki.qt.io/Install_Qt_5_on_Ubuntu)
 - [QT5Charts](https://doc.qt.io/qt-5/qtcharts-index.html)
 ## Installation on Linux (tested on Ubuntu 18.04 Bionic Beaver)
 
@@ -75,6 +76,11 @@ $ sudo apt-get install libzmq3-dev libzmqpp-dev
 ### Install Eigen3
 ```
 $ sudo apt install libeigen3-dev
+```
+
+### Install QT5
+```
+$ sudo apt-get install qt5-default
 ```
 
 ### Install QT5-Charts
