@@ -24,20 +24,29 @@ Make sure you have CMake installed. Go the CMakeLists.txt and click on it. CLion
 The easiest way to run the application is to make some [compound executables](https://www.jetbrains.com/help/clion/run-debug-configuration.html#config-folders) in CLion that boot everything you need. To run 1 team in GRSim, the simulator, you will need to add roboteam_ai, roboteam_world, and roboteam_robothub. 
 Make sure you have GRSim or ssl-vision running and are listening to the right ports. In general, the GRSim vision multicast port should be set to 10006.
 
-## Detailed guide: 
-First, make sure you have installed GRSim using the instructions found on the [RoboTeam fork of GRSim](https://github.com/RoboTeamTwente/grSim). Now exectuble the grsim binary from the command line. This usually looks like this:
+## Auxiliary Software
+It is recommended to use the game controller to control the gamestates. You can do so by downloading the latest binary release of the [SSL-Game-Controller](https://github.com/RoboCup-SSL/ssl-game-controller) repo, and executing it. For example, when downloaded to the Downloads folder:
 ```
-/directory_you_cloned_grsim_into/grSim/bin/grsim
+~/Downloads/ssl-game-controller_v1.2.0_linux_amd64
 ```
+You might need to chmod the file to make it executable. The AI client should now listen to the commands sent by the GameController. 
+
+Also, make sure you have installed GRSim using the instructions found on the [RoboTeam fork of GRSim](https://github.com/RoboTeamTwente/grSim). Now execute the grsim binary from the command line. This usually looks like this:
+```
+/directory_you_cloned_grsim/grSim/bin/grsim
+```
+## Making the executables: 
+
+Make sure the vision multicast port is set to 10006
 
 ### One Team: 
 Make the compound executable shown below:
-![Run configuration for 1 team](https://github.com/RoboTeamTwente/roboteam_suite/blob/RobotJesse-patch-1/readme_images/run_one_team.png?raw=true)
-Then run this and 
+<img src="https://github.com/RoboTeamTwente/roboteam_suite/blob/RobotJesse-patch-1/readme_images/run_two_teams.png?raw=true" width="800" height="500"><br>
+Then run this with grsim on. 
 
 ### Two Teams:
 Follow the steps used for the other compound executable, only now add 2 extra targets: roboteam_ai_1 and roboteam_robothub_1, as seen in the screenshot, to the compound. While creating the new CMake Targets, be sure to include a "1" in the program arguments, as seen in the image.
-![Run configuration for 2 teams](https://github.com/RoboTeamTwente/roboteam_suite/blob/RobotJesse-patch-1/readme_images/run_two_teams.png?raw=true)
+<img src="https://github.com/RoboTeamTwente/roboteam_suite/blob/RobotJesse-patch-1/readme_images/run_two_teams.png?raw=true" width="800" height="500"><br>
 
 
 
