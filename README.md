@@ -9,17 +9,17 @@ This repo contains:
 In order to test this code, we use the GRSim simulator developed by the SSL Team Parsian. However, due to differences in the control mechanism of the robot (specifically, theta vs omega control), this software requires the [RoboTeam fork of GRSim](https://github.com/RoboTeamTwente/grSim). Installation instructions can be found in the readme of that repo.
 
 Please note:
-This software is tested on Ubuntu 18.04 and 20.04 LTS, and the installation instructions are written with that distro/OS in mind. However, other distro's of Linux are also likely to be able to run this software, albeit with some modifications.
+This software is tested on Ubuntu 20.04 LTS, and the installation instructions are written with that distro/OS in mind. However, other distro's of Linux are also likely to be able to run this software, albeit with some modifications.
 
 
 # Usage
-First, clone this repository. We recommed using an SSH key if you are able to do so, as this immediately authorizes your future pushes to the repositories. 
+First, clone this repository. We recommend using an SSH key if you are able to do so, as this immediately authorizes your future pushes to the repositories. 
 ```
 git clone --recurse-submodule git@github.com:RoboTeamTwente/roboteam_suite.git
 ```
 Now, you can open the roboteam_suite project with an IDE of your choice. We recommed CLion, as it has a lot of very helpful features and you can get a student license for it. 
 
-Make sure you have CMake installed. Go the CMakeLists.txt and click on it. CLion will generate a pop-up saying "project files not loaded" in blue in the top right corner. Clicking it will have CMake load the files. This means it generates instructions on how the files should be compiled in order to produce the executables specified in the CMakeLists.txt file. You can now compile the targets!
+Make sure you have CMake installed. Go to the CMakeLists.txt and click on it. CLion will generate a pop-up saying "project files not loaded" in blue in the top right corner. Clicking it will have CMake load the project. This means it generates instructions on how the files should be compiled in order to produce the executables specified in the CMakeLists.txt file. You can now compile the targets!
 
 The easiest way to run the application is to make some [compound executables](https://www.jetbrains.com/help/clion/run-debug-configuration.html#config-folders) in CLion that boot everything you need. To run 1 team in GRSim, the simulator, you will need to add roboteam_ai, roboteam_world, and roboteam_robothub. 
 Make sure you have GRSim or ssl-vision running and are listening to the right ports. In general, the GRSim vision multicast port should be set to 10006.
@@ -29,7 +29,7 @@ It is recommended to use the game controller to control the gamestates. You can 
 ```
 ~/Downloads/ssl-game-controller_v1.2.0_linux_amd64
 ```
-You might need to chmod the file to make it executable. The AI client should now listen to the commands sent by the GameController. 
+You might need to [chmod](https://www.howtoforge.com/tutorial/linux-chmod-command/) the file to make it executable. The AI client should now listen to the commands sent by the GameController. 
 
 Also, make sure you have installed GRSim using the instructions found on the [RoboTeam fork of GRSim](https://github.com/RoboTeamTwente/grSim). Now execute the grsim binary from the command line. This usually looks like this:
 ```
@@ -42,7 +42,7 @@ Make sure the vision multicast port is set to 10006
 ### One Team: 
 Make the compound executable shown below:
 <img src="https://github.com/RoboTeamTwente/roboteam_suite/blob/RobotJesse-patch-1/readme_images/run_two_teams.png?raw=true" width="800" height="500"><br>
-Then run this with grsim on. 
+Then run this compound executable and run GRSim. 
 
 ### Two Teams:
 Follow the steps used for the other compound executable, only now add 2 extra targets: roboteam_ai_1 and roboteam_robothub_1, as seen in the screenshot, to the compound. While creating the new CMake Targets, be sure to include a "1" in the program arguments, as seen in the image.
@@ -150,4 +150,3 @@ Working with a referee
 
 Working with the grSim simulator
 [grSim](https://github.com/RoboTeamTwente/grSim) 
-
