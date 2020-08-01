@@ -60,6 +60,7 @@ Follow the steps used for the other compound executable, only now add 2 extra ta
 - [Eigen3 3.3.7-2](http://eigen.tuxfamily.org/index.php?title=Main_Page)
 - [QT5](https://wiki.qt.io/Install_Qt_5_on_Ubuntu)
 - [QT5Charts](https://doc.qt.io/qt-5/qtcharts-index.html)
+- [Google Test and Google Mock]()
 ## Installation on Linux (tested on Ubuntu 18.04 Bionic Beaver)
 
 ### Install protobuf 3.9.1
@@ -96,6 +97,21 @@ $ sudo apt-get install qt5-default
 ```
 $ sudo apt install libqt5charts5-dev 
 ```
+### Install Google Test
+If you want to run tests, please install and build gtest using the following instructions:
+
+`sudo apt install libgtest-dev cmake` <br>
+`cd /usr/src/gtest`<br>
+`sudo cmake CMakeLists.txt`<br>
+`sudo make`<br>
+`sudo cp *.a /usr/lib`<br>
+`cd /usr/src/gmock`<br>
+`sudo cmake CMakeLists.txt`<br>
+`sudo make`<br>
+`sudo cp *.a /usr/lib`<br>
+
+(https://stackoverflow.com/questions/28869319/cannot-find-lgtest-when-setting-up-google-test) <br>
+\* You can follow similar steps for google mock, should you need it
 
 ## Installation on macOS (tested on macOS 10.14 Mojave)
 Make sure you already have the following:
