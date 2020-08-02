@@ -1,6 +1,6 @@
 # roboteam_suite
 This repo contains:
-- Roboteam AI, which listens to Roboteam World and makes decisions on what the robots should do based on the vision data.
+- Roboteam AI, which makes decisions on what the robots should do based on the vision data, and feedback data (received from robots) which it receives from Roboteam World and Roboteam Robothub respectively.
 - Roboteam World, which interprets vision data (received from GRSim, or from a physical camera)
 - Roboteam Robothub, used to send commands to the robots (either through GRSim or the base station)
 - Roboteam Utils, which contains a lot of helper functions, primarily geometrical in nature, such as Lines, Triangles, etc. These are used in other repo's, such as Roboteam AI and Roboteam World
