@@ -56,6 +56,6 @@ target_link_libraries(roboteam_proto
 target_include_directories(roboteam_proto
         # Proto headers
         PUBLIC ${PROTOBUF_INCLUDE_DIRS}
-        # This points to cmake-build-debug/utils/include/utils/networking
+        # This points to cmake-build-debug/proto/include/proto
         PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/..
         )
