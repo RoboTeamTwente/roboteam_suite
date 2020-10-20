@@ -22,6 +22,8 @@ protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS
         ${PROTO_BASE_PATH}/GeometryCameraCalibration.proto
         ${PROTO_BASE_PATH}/GeometryFieldSize.proto
 
+        ${PROTO_BASE_PATH}/State.proto
+        ${PROTO_BASE_PATH}/RobotData.proto
         #demo
         ${PROTO_BASE_PATH}/DemoRobot.proto
 
