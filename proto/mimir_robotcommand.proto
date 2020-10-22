@@ -34,5 +34,4 @@ message globalVelocity {
 message Kicker {
     bool chip = 1;
     float kickChipPower = 2;
-    uint32 genevaAngle = 3;
 }
