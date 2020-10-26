@@ -24,6 +24,7 @@ protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS
 
         ${PROTO_BASE_PATH}/State.proto
         ${PROTO_BASE_PATH}/RobotData.proto
+        ${PROTO_BASE_PATH}/RobotParameters.proto
         #demo
         ${PROTO_BASE_PATH}/DemoRobot.proto
 
