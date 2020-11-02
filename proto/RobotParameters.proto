@@ -9,3 +9,8 @@ message RobotParameters{
     float dribbler_width = 4;
     float angle_offset = 5;
 }
+
+message TeamParameters{
+    bool didChange = 1;
+    RobotParameters parameters = 2;
+}

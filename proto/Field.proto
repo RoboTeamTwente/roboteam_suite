@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package proto;
+import "messages_robocup_ssl_geometry.proto";
+import "Vector2f.proto";
+
+message FieldRectangle {
+    Vector2f bottomLeft = 1;
+    Vector2f topRight = 2;
+}
+
+message FieldLineSegment{
+    Vector2f p1 = 1;
+    Vector2f p2 = 2;
+    float thickness = 3;
+    SSL_FieldShapeType type = 4;
+}
+
+message FieldCircularArc{
+    Vector2f center = 1;
+    float a1 = 2;
+    float a2 = 3;
+    float thickness = 4;
+    SSL_FieldShapeType type = 5;
+}
+
+message FieldGeometry{
+    FieldRectangle playArea = 1;
+    FieldRectangle boundaryArea = 2;
+    FieldRectangle leftDefenseArea = 3;
+    FieldRectangle rightDefenseArea = 4;
+    float goalWidth = 5;
+    float goalDepth = 6;
+    float boundaryWidth = 7;
+    repeated FieldLineSegment ssl_field_lines = 8;
+    repeated FieldCircularArc ssl_field_arcs = 9;
+}
+
+message FieldMessage{
+    FieldGeometry field = 1;
+    repeated SSL_GeometryCameraCalibration cameras = 2;
+}
+
+message Field{
+    bool hasChanged = 1;
+    FieldMessage field = 2;
+}

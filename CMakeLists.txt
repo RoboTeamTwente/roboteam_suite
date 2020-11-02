@@ -18,6 +18,8 @@ protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS
         ${PROTO_BASE_PATH}/State.proto
         ${PROTO_BASE_PATH}/RobotData.proto
         ${PROTO_BASE_PATH}/RobotParameters.proto
+        ${PROTO_BASE_PATH}/Field.proto
+        ${PROTO_BASE_PATH}/Referee.proto
 
         #grsim
         ${PROTO_BASE_PATH}/grSim_Commands.proto
