@@ -1,6 +1,18 @@
 syntax = "proto3";
 
+import "World.proto";
+import "RobotParameters.proto";
+import "messages_robocup_ssl_wrapper.proto";
+import "messages_robocup_ssl_referee.proto";
+
 package proto;
 message State {
+    World last_seen_world = 1;
+    World command_extrapolated_world = 2;
+    World ball_camera_world = 3;
+    RobotParameters blue_robot_parameters = 4;
+    RobotParameters yellow_robot_parameters = 5;
 
+    repeated SSL_WrapperPacket processedDetectionFrames = 10;
+    repeated SSL_Referee processedRefereePackets = 11;
 }
