@@ -9,9 +9,6 @@ message RobotFeedback {
     bool batteryLow = 4;
     bool hasBall = 5;
     float ballPos = 6;
-    bool genevaIsWorking = 7;
-    bool genevaIsTurning = 8;
-    int32 genevaState = 9;
     float x_vel = 10;
     float yaw = 11;
     float y_vel = 12;

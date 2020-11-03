@@ -16,7 +16,6 @@ message grSim_Robot_Command {
     float wheel3 = 11;
     float wheel4 = 12;
     // in radians
-    float geneva_angle = 13;
     bool use_angle = 14;
 }
 
