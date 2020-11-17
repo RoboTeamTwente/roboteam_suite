@@ -7,4 +7,5 @@ package proto;
 message RobotData {
     repeated RobotCommand sentCommands = 1;
     repeated RobotFeedback receivedFeedback = 2;
+    bool isYellow = 3;
 }
