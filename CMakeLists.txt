@@ -15,6 +15,7 @@ protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS
         ${PROTO_BASE_PATH}/WorldRobot.proto
 
 
+        ${PROTO_BASE_PATH}/AICommand.proto
         ${PROTO_BASE_PATH}/State.proto
         ${PROTO_BASE_PATH}/RobotData.proto
         ${PROTO_BASE_PATH}/RobotParameters.proto

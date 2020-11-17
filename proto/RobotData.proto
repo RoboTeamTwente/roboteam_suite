@@ -1,6 +1,10 @@
 syntax = "proto3";
 
+import "RobotCommand.proto";
+import "RobotFeedback.proto";
+
 package proto;
 message RobotData {
-
+    repeated RobotCommand sentCommands = 1;
+    repeated RobotFeedback receivedFeedback = 2;
 }
