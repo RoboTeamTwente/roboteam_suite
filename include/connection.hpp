@@ -1,12 +1,12 @@
 #ifndef __CONNECTION_HPP__
 #define __CONNECTION_HPP__
 
-#include "type_traits.hpp"
-
 #include <roboteam_proto/State.pb.h>
-
 #include <stx/result.h>
+
 #include <zmqpp/zmqpp.hpp>
+
+#include "type_traits.hpp"
 
 namespace rtt::central {
 
@@ -22,6 +22,7 @@ namespace rtt::central {
 
         template <typename T>
         stx::Result<T, std::string> read_next() {
+            static_assert(type_traits::is_serializable_v<T>, "T is not serializable to string in Connection::write()");
             zmqpp::message msg;
             socket.receive(msg);
             std::string data;
@@ -29,9 +30,9 @@ namespace rtt::central {
             T object;
             auto succ = object.ParseFromString(data);
             if (succ) {
-                return stx::Ok(std::move(obj));
+                return stx::Ok(std::move(object));
             }
-            return stx::Err(data);
+            return stx::Err(std::move(data));
         }
 
         template <typename T>
@@ -40,6 +41,10 @@ namespace rtt::central {
             std::string out;
             s.SerializeToString(&out);
             socket.send(out);
+        }
+
+        bool is_ok() {
+            return static_cast<bool>(socket); 
         }
     };
 
