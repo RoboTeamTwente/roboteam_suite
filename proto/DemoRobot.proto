@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package proto;
-
-message DemoRobot {
-    int32 id = 1;
-    bool reserve = 2;
-    uint32 halt = 3;
-}
