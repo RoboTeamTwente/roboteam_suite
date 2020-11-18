@@ -3,7 +3,7 @@
 namespace rtt::central {
 
     Server::Server()
-        : modules(Mutex<ModuleHandler>{ &this->module_handshakes }) {
+        : modules{ std::make_unique<ModuleHandler>(&this->module_handshakes) }{
     }
 
     void Server::handle_roboteam_ai() {
@@ -27,7 +27,7 @@ namespace rtt::central {
         // send it to the interface
         roboteam_interface.acquire()->write(ok);
         // forward this state to all modules.
-        modules.acquire()->broadcast(ok);
+        modules.acquire()->get()->broadcast(ok);
         *current_ai_state.acquire() = stx::Some(std::move(ok));
     }
 
@@ -35,6 +35,7 @@ namespace rtt::central {
         // spawn a thread for reading -> when reading was received update
         // this->current_settings?
         // only needs for reading, the only writing the interface gets is whatever the AI sends.
+
     }
 
     void Server::run() {

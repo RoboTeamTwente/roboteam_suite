@@ -20,7 +20,8 @@ namespace rtt::central {
          * @brief These are the modules connected.
          * They merely _receive_ data, they never send any, apart from inital handshake.
          */
-        Mutex<ModuleHandler> modules;  // ->write() broadcasts
+        Mutex<std::unique_ptr<ModuleHandler>> modules;  // ->write() broadcasts
+
         // When a module broadcasts its handshare (Handshake.proto)
         // it's stored here, ModuleHandler basically backtracks it to this vector
         // this is why ModuleHandler takes an std::vector<proto::Handshake>* as

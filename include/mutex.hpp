@@ -50,8 +50,8 @@ namespace rtt::central {
         std::mutex _internal_mutex;
 
     public:
-        Mutex(T data) noexcept
-            : _internal_data{ std::move(data) } {
+        Mutex(T&& data) noexcept
+            : _internal_data{ std::forward<T>(data) } {
         }
 
         Mutex() = default;
