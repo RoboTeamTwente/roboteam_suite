@@ -11,6 +11,7 @@ set_target_properties(roboteam_central_server PROPERTIES
 target_link_libraries(roboteam_central_server
         PRIVATE stx
         PRIVATE roboteam_proto
+        PRIVATE roboteam_utils
         )
 
 target_include_directories(roboteam_central_server

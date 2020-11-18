@@ -5,7 +5,9 @@
 
 namespace rtt::central {
 
-    struct Module {};
+    struct ModuleHandler {
+        // zmqpp::socket_type::xrequest
+    };
 
 }  // namespace rtt::central
 #endif

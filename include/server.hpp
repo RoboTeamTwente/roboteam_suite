@@ -9,6 +9,7 @@
 
 #include "connection.hpp"
 #include "module.hpp"
+#include "mutex.hpp"
 
 namespace rtt::central {
 
@@ -17,42 +18,55 @@ namespace rtt::central {
          * @brief These are the modules connected.
          * They merely _receive_ data, they never send any, apart from inital handshake.
          */
-        std::vector<Module> modules{};
+        Mutex<ModuleHandler> modules; // ->write() broadcasts
 
-        // Why couldn't I use rust again?...
-        std::mutex _this_mutex;
 
         /**
          * @brief There is a direct conneciton to the AI and the interface.
          * Both are readwrite and continuously read and written to.
          */
-        Connection<ConnectionType::READWRITE> roboteam_ai;
-        Connection<ConnectionType::READWRITE> roboteam_interface;
+        Mutex<Connection<zmqpp::socket_type::pair>> roboteam_ai;
+        Mutex<Connection<zmqpp::socket_type::pair>> roboteam_interface;
 
-        std::thread ai_thread;
-        std::thread interface_thread;
+        Mutex<std::thread> ai_thread;
+        Mutex<std::thread> interface_thread;
 
-        stx::Option<proto::State> current_ai_state;
+        Mutex<stx::Option<proto::State>> current_ai_state;
 
         void handle_roboteam_ai() {
             // read incoming data and forward to modules.
             while (true) {
-
-                roboteam_ai.read_next<proto::State>().match()
+                roboteam_ai.acquire()->read_next<proto::State>().match(
+                    [](proto::State ok) {
+                        std::cout << "Incoming world ID: " << ok.last_seen_world().id() << std::endl;
+                        // ok is a proto::State object, bound to lvalue
+                    },
+                    [](std::string err) {
+                        std::cout << err << std::endl;
+                        // err is a string that's the message data.
+                    });
             }
         }
 
-        void handle_interface_thread() {
+        void handle_interface() {
             // Possibly spawn 2 threads? one for reading one for writing? not sure.
         }
 
         void run() {
-            ai_thread = std::thread([this]() {
+            new (&ai_thread) Mutex{ std::thread([this]() {
                 this->handle_roboteam_ai();
-            });
+            })};
+
+            new (&interface_thread) Mutex{ std::thread([this]() {
+                this->handle_interface();
+            })};
+
             while (true) {
                 std::cout << "Looped..." << std::endl;
             }
+
+            ai_thread.acquire()->join();
+            interface_thread.acquire()->join();
         }
     };
 

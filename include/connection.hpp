@@ -1,24 +1,46 @@
 #ifndef __CONNECTION_HPP__
 #define __CONNECTION_HPP__
 
+#include "type_traits.hpp"
+
 #include <roboteam_proto/State.pb.h>
 
 #include <stx/result.h>
+#include <zmqpp/zmqpp.hpp>
 
 namespace rtt::central {
 
-    enum class ConnectionType {
-        READ = 0,
-        WRITE = 1,
-        READWRITE = READ | WRITE,
-    };
-
-    template <ConnectionType ct>
+    template <zmqpp::socket_type ct, size_t port>
     struct Connection {
+        zmqpp::context context;
+        zmqpp::socket socket;
+
+        Connection()
+            : socket{ context, ct } {
+            socket.bind("tcp://*:" + std::to_string(port));
+        }
+
         template <typename T>
         stx::Result<T, std::string> read_next() {
-            return stx::Err("");
-        } 
+            zmqpp::message msg;
+            socket.receive(msg);
+            std::string data;
+            msg >> data;
+            T object;
+            auto succ = object.ParseFromString(data);
+            if (succ) {
+                return stx::Ok(std::move(obj));
+            }
+            return stx::Err(data);
+        }
+
+        template <typename T>
+        void write(T const& s) {
+            static_assert(type_traits::is_serializable_v<T>, "T is not serializable to string in Connection::write()");
+            std::string out;
+            s.SerializeToString(&out);
+            socket.send(out);
+        }
     };
 
 }  // namespace rtt::central
