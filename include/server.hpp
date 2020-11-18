@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "connection.hpp"
-#include "module.hpp"
+#include "modulehandler.hpp"
 #include "mutex.hpp"
 #include "utils.hpp"
 
@@ -21,7 +21,11 @@ namespace rtt::central {
          * They merely _receive_ data, they never send any, apart from inital handshake.
          */
         Mutex<ModuleHandler> modules;  // ->write() broadcasts
-
+        // When a module broadcasts its handshare (Handshake.proto)
+        // it's stored here, ModuleHandler basically backtracks it to this vector
+        // this is why ModuleHandler takes an std::vector<proto::Handshake>* as
+        // ctor argument
+        Mutex<std::vector<proto::Handshake>> module_handshakes; 
 
         /**
          * @brief There is a direct conneciton to the AI and the interface.
@@ -37,51 +41,13 @@ namespace rtt::central {
         // placeholder type Setting
         Mutex<stx::Option<proto::Setting>> current_settings;
 
-        void handle_roboteam_ai() {
-            // read incoming data and forward to modules.
-            while (true) {
-                auto ai = roboteam_ai.acquire();
-                auto setting_message = current_settings.acquire()->clone();
-                if (setting_message.is_some()) {
-                    ai->write(std::move(setting_message).unwrap());
-                }
-                
-                auto const ai_packet = ai->read_next<proto::State>();
-                ai_packet.match(
-                    [this](proto::State ok) {
-                        std::cout << "Ok packet received: " << ok.ball_camera_world().id() << std::endl;
-                        // forward this state to all modules.
-                        modules.acquire()->broadcast(ok);
-                        roboteam_interface.acquire()->write(ok);
-                        *current_ai_state.acquire() = stx::Some(std::move(ok));
-                    },
-                    [](std::string err) {
-                        std::cout << err << std::endl;
-                        // err is a string that's the message data.
-                    });
-            }
-        }
+        Server();
+        void handle_success_state_read(proto::State ok);
+        void handle_roboteam_ai();
 
-        void handle_interface() {
-            // Possibly spawn 2 threads? one for reading one for writing? not sure.
-        }
+        void handle_interface();
 
-        void run() {
-            new (&ai_thread) Mutex{ std::thread([this]() {
-                this->handle_roboteam_ai();
-            }) };
-
-            new (&interface_thread) Mutex{ std::thread([this]() {
-                this->handle_interface();
-            }) };
-
-            while (true) {
-                std::cout << "Looped..." << std::endl;
-            }
-
-            ai_thread.acquire()->join();
-            interface_thread.acquire()->join();
-        }
+        void run();
     };
 
 }  // namespace rtt::central

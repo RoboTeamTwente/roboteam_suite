@@ -1,7 +1,10 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(roboteam_central_server VERSION 0.1.0)
 
-add_executable(roboteam_central_server main.cpp)
+add_executable(roboteam_central_server 
+        main.cpp
+        src/server.cpp
+        )
 
 set_target_properties(roboteam_central_server PROPERTIES
         CMAKE_CXX_STANDARD 20
