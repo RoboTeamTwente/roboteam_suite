@@ -35,6 +35,9 @@ namespace rtt::central {
                         _handshake_vector->acquire()->emplace_back(std::move(ok));
                     },
                     [](std::string&& err) {
+                        if (err.size() == 0) {
+                            return;
+                        }
                         // something else than a valid Handshake was received
                         std::cout << err << std::endl;
                     }

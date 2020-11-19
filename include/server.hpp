@@ -20,7 +20,7 @@ namespace rtt::central {
          * @brief These are the modules connected.
          * They merely _receive_ data, they never send any, apart from inital handshake.
          */
-        Mutex<std::unique_ptr<ModuleHandler>> modules;  // ->write() broadcasts
+        ModuleHandler modules;  // ->write() broadcasts
 
         // When a module broadcasts its handshare (Handshake.proto)
         // it's stored here, ModuleHandler basically backtracks it to this vector
@@ -37,16 +37,17 @@ namespace rtt::central {
 
         Mutex<std::thread> ai_thread;
         Mutex<std::thread> interface_thread;
+        Mutex<std::thread> module_thread;
 
-        Mutex<stx::Option<proto::State>> current_ai_state;
         // placeholder type Setting
-        Mutex<stx::Option<proto::Setting>> current_settings;
+        Mutex<stx::Option<proto::UiSettings>> current_settings;
 
         Server();
         void handle_success_state_read(proto::State ok);
         void handle_roboteam_ai();
 
         void handle_interface();
+        void handle_modules();
 
         void run();
     };

@@ -3,7 +3,7 @@
 namespace rtt::central {
 
     Server::Server()
-        : modules{ std::make_unique<ModuleHandler>(&this->module_handshakes) }{
+        : modules{ &this->module_handshakes } {
     }
 
     void Server::handle_roboteam_ai() {
@@ -18,7 +18,11 @@ namespace rtt::central {
             ai->read_next<proto::State>()
                 .match(
                     [this](proto::State&& ok) { this->handle_success_state_read(ok); },
-                    [](std::string&& err) { std::cout << err << std::endl; });
+                    [](std::string&& err) { 
+                        if (err.size()) {
+                            std::cout << err << std::endl;
+                     } });
+            std::this_thread::sleep_for(std::chrono::seconds(1));
         }
     }
 
@@ -27,15 +31,29 @@ namespace rtt::central {
         // send it to the interface
         roboteam_interface.acquire()->write(ok);
         // forward this state to all modules.
-        modules.acquire()->get()->broadcast(ok);
-        *current_ai_state.acquire() = stx::Some(std::move(ok));
+        modules.broadcast(ok);
     }
 
     void Server::handle_interface() {
-        // spawn a thread for reading -> when reading was received update
-        // this->current_settings?
-        // only needs for reading, the only writing the interface gets is whatever the AI sends.
+        while (true) {
+            auto interface = roboteam_interface.acquire();
+            interface->read_next<proto::UiSettings>()
+                .match(
+                    [this](proto::UiSettings&& ok) {
+                        *this->current_settings.acquire() = stx::Some(std::move(ok));
+                    },
+                    [](std::string&& err) {
+                        if (err.size() == 0) {
+                            return;
+                        }
+                        std::cout << err << std::endl;
+                    });
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+        }
+    }
 
+    void Server::handle_modules() {
+        modules.run();
     }
 
     void Server::run() {
@@ -47,9 +65,9 @@ namespace rtt::central {
             this->handle_interface();
         }) };
 
-        while (true) {
-            std::cout << "Looped..." << std::endl;
-        }
+        new (&module_thread) Mutex{ std::thread([this]() {
+            this->handle_modules();
+        }) };
 
         ai_thread.acquire()->join();
         interface_thread.acquire()->join();

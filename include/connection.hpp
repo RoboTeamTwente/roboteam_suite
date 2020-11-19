@@ -24,8 +24,10 @@ namespace rtt::central {
         stx::Result<T, std::string> read_next() {
             static_assert(type_traits::is_serializable_v<T>, "T is not serializable to string in Connection::write()");
             zmqpp::message msg;
-            socket.receive(msg);
-            std::string data;
+            std::string data{};
+            if (!socket.receive(msg, true)) {
+                return stx::Err(std::move(data));
+            } 
             msg >> data;
             T object;
             auto succ = object.ParseFromString(data);
