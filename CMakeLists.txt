@@ -45,6 +45,10 @@ protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS
         ${PROTO_BASE_PATH}/messages_robocup_ssl_game_controller_rcon_team.proto
         ${PROTO_BASE_PATH}/messages_robocup_ssl_game_event.proto
         ${PROTO_BASE_PATH}/messages_robocup_ssl_referee.proto
+
+        # New interface
+        ${PROTO_BASE_PATH}/UiOptions.proto
+        ${PROTO_BASE_PATH}/Handshake.proto
         )
 
 add_library(roboteam_proto STATIC
