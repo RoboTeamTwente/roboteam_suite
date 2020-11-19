@@ -31,6 +31,8 @@ namespace rtt::central {
             while (true) {
                 conns.acquire()->read_next<proto::Handshake>().match(
                     [this](proto::Handshake ok) {
+                        // check whether maybe this module name is already included?
+                        // if so -> drop it?
                         // handshake received, push to _handshake_vector
                         _handshake_vector->acquire()->emplace_back(std::move(ok));
                     },
