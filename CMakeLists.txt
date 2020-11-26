@@ -15,6 +15,8 @@ target_link_libraries(roboteam_central_server
         PRIVATE stx
         PRIVATE roboteam_proto
         PRIVATE roboteam_utils
+        PUBLIC ${ZeroMQ_LIBRARIES}
+        PUBLIC ${ZMQPP_LIBRARIES}
         )
 
 target_include_directories(roboteam_central_server

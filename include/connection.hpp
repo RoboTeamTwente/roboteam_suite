@@ -1,6 +1,6 @@
 #ifndef __CONNECTION_HPP__
 #define __CONNECTION_HPP__
-
+// #define ZMQ_BUILD_DRAFT_API	1
 #include <roboteam_proto/State.pb.h>
 #include <stx/result.h>
 
@@ -27,7 +27,7 @@ namespace rtt::central {
             std::string data{};
             if (!socket.receive(msg, true)) {
                 return stx::Err(std::move(data));
-            } 
+            }
             msg >> data;
             T object;
             auto succ = object.ParseFromString(data);
@@ -46,7 +46,7 @@ namespace rtt::central {
         }
 
         bool is_ok() {
-            return static_cast<bool>(socket); 
+            return static_cast<bool>(socket);
         }
     };
 

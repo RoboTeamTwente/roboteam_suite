@@ -11,6 +11,7 @@ namespace rtt::central {
     struct ModuleHandler {
         ModuleHandler() = default;
         // zmqpp::socket_type::xrequest
+        // Send and read from many
         Mutex<Connection<zmqpp::socket_type::xrequest, 16969>> conns;
 
         Mutex<std::thread> conns_threads;
