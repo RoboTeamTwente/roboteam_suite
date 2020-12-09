@@ -20,9 +20,10 @@ namespace rtt::central {
                     [this](proto::ModuleState&& ok) { this->handle_success_state_read(ok); },
                     [](std::string&& err) { 
                         if (err.size()) {
+                            std::cout << "Error packet received" << std::endl;
                             std::cout << err << std::endl;
                      } });
-            std::this_thread::sleep_for(std::chrono::seconds(1));
+            // std::this_thread::sleep_for(std::chrono::seconds(1));
         }
     }
 
@@ -48,7 +49,7 @@ namespace rtt::central {
                         }
                         std::cout << err << std::endl;
                     });
-            std::this_thread::sleep_for(std::chrono::seconds(1));
+            // std::this_thread::sleep_for(std::chrono::seconds(1));
         }
     }
 
@@ -57,14 +58,17 @@ namespace rtt::central {
     }
 
     void Server::run() {
+        std::cout << "Constructing AI thread." << std::endl;
         new (&ai_thread) Mutex{ std::thread([this]() {
             this->handle_roboteam_ai();
         }) };
 
+        std::cout << "Constructing UI thread." << std::endl;
         new (&interface_thread) Mutex{ std::thread([this]() {
             this->handle_interface();
         }) };
 
+        std::cout << "Constructing Modules thread." << std::endl;
         new (&module_thread) Mutex{ std::thread([this]() {
             this->handle_modules();
         }) };

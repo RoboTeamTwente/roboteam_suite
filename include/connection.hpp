@@ -1,9 +1,9 @@
 #ifndef __CONNECTION_HPP__
 #define __CONNECTION_HPP__
-// #define ZMQ_BUILD_DRAFT_API	1
 #include <roboteam_proto/State.pb.h>
 #include <stx/result.h>
 
+#define ZMQ_BUILD_DRAFT_API 1
 #include <zmqpp/zmqpp.hpp>
 
 #include "type_traits.hpp"

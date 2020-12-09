@@ -12,13 +12,28 @@ set_target_properties(roboteam_central_server PROPERTIES
         )
 
 target_link_libraries(roboteam_central_server
-        PRIVATE stx
-        PRIVATE roboteam_proto
-        PRIVATE roboteam_utils
-        PUBLIC ${ZeroMQ_LIBRARIES}
-        PUBLIC ${ZMQPP_LIBRARIES}
+        PUBLIC stx
+        PUBLIC networking
+        PUBLIC roboteam_proto
+        PUBLIC roboteam_utils
         )
 
 target_include_directories(roboteam_central_server
-        PRIVATE ./include
+        PUBLIC ./include
+        )
+
+add_executable(roboteam_central_server_tests
+        src/server.cpp
+        test/pair_test.cpp
+        )
+
+target_include_directories(roboteam_central_server_tests
+        PUBLIC ./include
+        )
+
+target_link_libraries(roboteam_central_server_tests        
+        PUBLIC stx
+        PUBLIC networking
+        PUBLIC roboteam_proto
+        PUBLIC roboteam_utils
         )

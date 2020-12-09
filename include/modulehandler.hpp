@@ -10,9 +10,9 @@ namespace rtt::central {
 
     struct ModuleHandler {
         ModuleHandler() = default;
-        // zmqpp::socket_type::xrequest
+        // zmqpp::socket_type::server
         // Send and read from many
-        Mutex<Connection<zmqpp::socket_type::xrequest, 16969>> conns;
+        Mutex<Connection<zmqpp::socket_type::server, 16969>> conns;
 
         Mutex<std::thread> conns_threads;
 
@@ -25,6 +25,9 @@ namespace rtt::central {
         template <typename T>
         void broadcast(T const& data) {
             static_assert(type_traits::is_serializable_v<T>, "T is not serializable in ModuleHandler::broadcast()");
+            if (_handshake_vector->acquire()->empty()) {
+                return;
+            }
             conns.acquire()->write(data);
         }
 
@@ -35,6 +38,7 @@ namespace rtt::central {
                         // check whether maybe this module name is already included?
                         // if so -> drop it?
                         // handshake received, push to _handshake_vector
+                        // Maybe change _handshake_vector to an std::unordered_map<std::string name, Handshake data> ?
                         _handshake_vector->acquire()->emplace_back(std::move(ok));
                     },
                     [](std::string&& err) {
@@ -47,8 +51,6 @@ namespace rtt::central {
                 );
                 std::this_thread::sleep_for(std::chrono::seconds(1));
             }
-            // main thread: read()
-            // launch second thread that handles all conns
         }
     };
 
