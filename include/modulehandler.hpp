@@ -31,8 +31,8 @@ namespace rtt::central {
             conns.acquire()->write(data);
         }
 
-        void run() {
-            while (true) {
+        void run(std::reference_wrapper<std::atomic<bool>> _run) {
+            while (_run.get().load()) {
                 conns.acquire()->read_next<proto::Handshake>().match(
                     [this](proto::Handshake ok) {
                         // check whether maybe this module name is already included?

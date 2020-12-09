@@ -8,7 +8,7 @@ namespace rtt::central {
 
     void Server::handle_roboteam_ai() {
         // read incoming data and forward to modules.
-        while (true) {
+        while (_run.load()) {
             auto ai = roboteam_ai.acquire();
             auto setting_message = current_settings.acquire()->clone();
             if (setting_message.is_some()) {
@@ -36,7 +36,7 @@ namespace rtt::central {
     }
 
     void Server::handle_interface() {
-        while (true) {
+        while (_run.load()) {
             auto interface = roboteam_interface.acquire();
             interface->read_next<proto::UiSettings>()
                 .match(
@@ -54,7 +54,7 @@ namespace rtt::central {
     }
 
     void Server::handle_modules() {
-        modules.run();
+        modules.run(std::ref(this->_run));
     }
 
     void Server::run() {
@@ -75,5 +75,10 @@ namespace rtt::central {
 
         ai_thread.acquire()->join();
         interface_thread.acquire()->join();
+        module_thread.acquire()->join();
+    }
+
+    void Server::stop() {
+        this->_run.store(false);
     }
 }  // namespace rtt::central

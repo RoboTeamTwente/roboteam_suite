@@ -17,6 +17,11 @@ namespace rtt::central {
 
     struct Server {
         /**
+         * @brief Boolean that describes whether the server should keep running
+         */
+        std::atomic<bool> _run = true;
+
+        /**
          * @brief These are the modules connected.
          * They merely _receive_ data, they never send any, apart from inital handshake.
          */
@@ -50,6 +55,7 @@ namespace rtt::central {
         void handle_modules();
 
         void run();
+        void stop();
     };
 
 }  // namespace rtt::central

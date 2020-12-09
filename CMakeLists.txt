@@ -25,6 +25,7 @@ target_include_directories(roboteam_central_server
 add_executable(roboteam_central_server_tests
         src/server.cpp
         test/pair_test.cpp
+        test/main.cpp
         )
 
 target_include_directories(roboteam_central_server_tests
@@ -33,6 +34,7 @@ target_include_directories(roboteam_central_server_tests
 
 target_link_libraries(roboteam_central_server_tests        
         PUBLIC stx
+        PUBLIC gtest
         PUBLIC networking
         PUBLIC roboteam_proto
         PUBLIC roboteam_utils
