@@ -11,6 +11,7 @@ namespace rtt::central {
     struct ModuleHandler {
         ModuleHandler() = default;
         // zmqpp::socket_type::server
+        // Client can connect using zmqpp::socket_type::client
         // Send and read from many
         Mutex<Connection<zmqpp::socket_type::server, 16969>> conns;
 
@@ -25,6 +26,8 @@ namespace rtt::central {
         template <typename T>
         void broadcast(T const& data) {
             static_assert(type_traits::is_serializable_v<T>, "T is not serializable in ModuleHandler::broadcast()");
+            // if no modules are connected -> do not write
+            // as there will be no valid host.
             if (_handshake_vector->acquire()->empty()) {
                 return;
             }

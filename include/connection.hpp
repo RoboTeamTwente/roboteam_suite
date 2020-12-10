@@ -9,7 +9,6 @@
 #include "type_traits.hpp"
 
 namespace rtt::central {
-
     template <zmqpp::socket_type ct, size_t port>
     struct Connection {
         zmqpp::context context;
@@ -22,7 +21,7 @@ namespace rtt::central {
 
         template <typename T>
         stx::Result<T, std::string> read_next() {
-            static_assert(type_traits::is_serializable_v<T>, "T is not serializable to string in Connection::write()");
+            static_assert(type_traits::is_serializable_v<T>, "T is not serializable to string in Connection::read_next()");
             zmqpp::message msg;
             std::string data{};
             if (!socket.receive(msg, true)) {

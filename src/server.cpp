@@ -49,7 +49,11 @@ namespace rtt::central {
                         }
                         std::cout << err << std::endl;
                     });
-            // std::this_thread::sleep_for(std::chrono::seconds(1));
+            // sleep thread but somehow prevent busy-waiting?
+            // implement scheduler?
+            // setInterval()?
+            // setTimeout()?
+            // idk @rolf
         }
     }
 
