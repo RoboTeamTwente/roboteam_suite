@@ -13,10 +13,8 @@ set_target_properties(roboteam_central_server PROPERTIES
 
 target_link_libraries(roboteam_central_server
         PUBLIC stx
-        PUBLIC zlib
-        PUBLIC uSocket
-        PUBLIC uWebSocket
         PUBLIC networking
+        PUBLIC ixwebsocket
         PUBLIC roboteam_proto
         PUBLIC roboteam_utils
         )
@@ -39,6 +37,7 @@ target_link_libraries(roboteam_central_server_tests
         PUBLIC stx
         PUBLIC gtest
         PUBLIC networking
+        PUBLIC ixwebsocket
         PUBLIC roboteam_proto
         PUBLIC roboteam_utils
         )

@@ -59,11 +59,11 @@ namespace rtt::central {
         }) };
 
         ai_thread.acquire()->join();
-        interface_thread.acquire()->join();
         module_thread.acquire()->join();
     }
 
     void Server::stop() {
         this->_run.store(false);
+        // roboteam_interface.acquire()->stop();
     }
 }  // namespace rtt::central

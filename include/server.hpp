@@ -43,7 +43,6 @@ namespace rtt::central {
         Mutex<Connection<zmqpp::socket_type::pair, 16970>> roboteam_ai;
 
         Mutex<std::thread> ai_thread;
-        Mutex<std::thread> interface_thread;
         Mutex<std::thread> module_thread;
 
         // placeholder type Setting

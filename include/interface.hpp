@@ -1,39 +1,50 @@
 #ifndef __INTERFACE_HPP__
 #define __INTERFACE_HPP__
 
-#include <uWebSockets/App.h>
+#include <ixwebsocket/IXWebSocketServer.h>
 
 #include "type_traits.hpp"
 
 namespace rtt::central {
     template <size_t port>
     struct Interface {
-        struct SocketData {};
-        uWS::App app;
+        ix::WebSocketServer server{ port };
         std::function<void(proto::UiSettings)> functor;
-
-        Mutex<std::vector<uWS::WebSocket<false, true>*>> _connected;
 
         void run(std::function<void(proto::UiSettings)>&& functor) {
             this->functor = functor;
-            uWS::TemplatedApp<false>::WebSocketBehavior general_catch = {
-                .open = [this](auto* ws) {
-                    auto connected = _connected.acquire();
-                    connected->emplace_back(ws); },
-                .message = [this](auto* ws, std::string_view message, uWS::OpCode opCode) {
-                    this->handle_incoming(ws, message, opCode);
-                },
-                .close = [this](auto* ws, int /*code*/, std::string_view /*message*/) {
-                    auto connected = _connected.acquire();
-                    connected->erase(std::remove(connected->begin(), connected->end(), ws), connected->end()); }
-            };
-            app.ws<SocketData>("/*", std::move(general_catch))
-                .listen(port, [](auto*){});
+            server.setOnClientMessageCallback(
+                [this](std::shared_ptr<ix::ConnectionState> connectionState,
+                       ix::WebSocket& webSocket,
+                       const ix::WebSocketMessagePtr& msg) {
+                    switch (msg->type) {
+                        case ix::WebSocketMessageType::Open:
+                            std::cout << "New incoming interface connection: " << connectionState->getId() << " (ping: " << webSocket.getPingInterval() << ")" << std::endl;
+                            break;
+                        case ix::WebSocketMessageType::Message:
+                            handle_incoming(connectionState, webSocket, msg);
+                            break;
+                        case ix::WebSocketMessageType::Close:
+                            std::cout << "Interface connection closed" << std::endl;
+                            break;
+                        case ix::WebSocketMessageType::Error:
+                            std::cout << "Interface connection error" << std::endl;
+                            break;
+                        case ix::WebSocketMessageType::Ping:
+                        case ix::WebSocketMessageType::Pong:
+                        case ix::WebSocketMessageType::Fragment:
+                        default:
+                            break;
+                    }
+                });
+
+            server.listen();
+            server.start();
         }
 
-        void handle_incoming([[maybe_unused]] uWS::WebSocket<false, true>* ws, std::string_view message, [[maybe_unused]] uWS::OpCode opCode) {
+        void handle_incoming(std::shared_ptr<ix::ConnectionState>, ix::WebSocket&, const ix::WebSocketMessagePtr& msg) {
             proto::UiSettings data;
-            if (!data.ParseFromArray(message.data(), message.size())) {
+            if (!data.ParseFromString(msg->str)) {
                 std::cerr << "Something else than proto::UiSettings has been received by central from ui" << std::endl;
                 return;
             }
@@ -45,10 +56,15 @@ namespace rtt::central {
             static_assert(type_traits::is_serializable_v<T>, "T is not serializable to string in Connection::write()");
             std::string out;
             s.SerializeToString(&out);
-            auto connected = _connected.acquire();
-            for (auto const& each : *connected) {
-                each->send(out);
+            auto clients = server.getClients();
+            std::cout << out << std::endl;
+            for (auto const& each : clients) {
+                each->sendBinary(out);
             }
+        }
+
+        void stop() {
+            server.stop();
         }
     };
 }  // namespace rtt::central
