@@ -35,26 +35,8 @@ namespace rtt::central {
         modules.broadcast(ok);
     }
 
-    void Server::handle_interface() {
-        while (_run.load()) {
-            auto interface = roboteam_interface.acquire();
-            interface->read_next<proto::UiSettings>()
-                .match(
-                    [this](proto::UiSettings&& ok) {
-                        *this->current_settings.acquire() = stx::Some(std::move(ok));
-                    },
-                    [](std::string&& err) {
-                        if (err.size() == 0) {
-                            return;
-                        }
-                        std::cout << err << std::endl;
-                    });
-            // sleep thread but somehow prevent busy-waiting?
-            // implement scheduler?
-            // setInterval()?
-            // setTimeout()?
-            // idk @rolf
-        }
+    void Server::handle_interface(proto::UiSettings data) {
+        *this->current_settings.acquire() = stx::Some(std::move(data));
     }
 
     void Server::handle_modules() {
@@ -67,10 +49,9 @@ namespace rtt::central {
             this->handle_roboteam_ai();
         }) };
 
-        std::cout << "Constructing UI thread." << std::endl;
-        new (&interface_thread) Mutex{ std::thread([this]() {
-            this->handle_interface();
-        }) };
+        roboteam_interface.acquire()->run([this](proto::UiSettings data) { 
+            handle_interface(std::move(data)); 
+        });
 
         std::cout << "Constructing Modules thread." << std::endl;
         new (&module_thread) Mutex{ std::thread([this]() {

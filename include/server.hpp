@@ -8,10 +8,11 @@
 #include <thread>
 #include <vector>
 
+#include "utils.hpp"
+#include "mutex.hpp"
+#include "interface.hpp"
 #include "connection.hpp"
 #include "modulehandler.hpp"
-#include "mutex.hpp"
-#include "utils.hpp"
 
 namespace rtt::central {
 
@@ -33,12 +34,13 @@ namespace rtt::central {
         // ctor argument
         Mutex<std::vector<proto::Handshake>> module_handshakes; 
 
+
         /**
          * @brief There is a direct conneciton to the AI and the interface.
          * Both are readwrite and continuously read and written to.
          */
+        Mutex<Interface<16971>> roboteam_interface{};
         Mutex<Connection<zmqpp::socket_type::pair, 16970>> roboteam_ai;
-        Mutex<Connection<zmqpp::socket_type::pair, 16971>> roboteam_interface;
 
         Mutex<std::thread> ai_thread;
         Mutex<std::thread> interface_thread;
@@ -51,7 +53,7 @@ namespace rtt::central {
         void handle_success_state_read(proto::ModuleState ok);
         void handle_roboteam_ai();
 
-        void handle_interface();
+        void handle_interface(proto::UiSettings data);
         void handle_modules();
 
         void run();
