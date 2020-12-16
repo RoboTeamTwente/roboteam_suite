@@ -1,9 +1,8 @@
 #include <gtest/gtest.h>
+#include <ixwebsocket/IXWebSocket.h>
 
 #include <iostream>
 #include <roboteam_utils/networking/include/Pair.hpp>
-
-#include <ixwebsocket/IXWebSocket.h>
 
 #include "server.hpp"
 using namespace rtt::central;
@@ -14,18 +13,19 @@ void run_server(Server* s) {
 
 TEST(ServerTests, websocket_test) {
     Server s{};
-    
+
     std::thread t{ run_server, &s };
     std::this_thread::sleep_for(std::chrono::seconds(1));
-    
+
     rtt::networking::PairReceiver<16970> ai{};
-    
-    ix::WebSocket socket{ };
+
+    ix::WebSocket socket{};
     socket.setUrl("ws://localhost:16971/");
-    socket.setOnMessageCallback([](ix::WebSocketMessagePtr const& ptr) {
+    bool received = false;
+    socket.setOnMessageCallback([&](ix::WebSocketMessagePtr const& msg) {
         // never received withtype == Message
-        std::cout << (int)ptr->type << std::endl;
-        if (ptr->type != ix::WebSocketMessageType::Message) {
+        std::cout << "Message type " << (int)msg->type << std::endl;
+        if (msg->type != ix::WebSocketMessageType::Message) {
             // std::cout << ptr->errorInfo.decompressionError << "\n"
             //         << ptr->errorInfo.http_status << "\n"
             //         << ptr->errorInfo.reason << "\n"
@@ -34,29 +34,36 @@ TEST(ServerTests, websocket_test) {
             return;
         }
         proto::ModuleState data;
+        ASSERT_TRUE(data.ParseFromString(msg->str));
+        received = true;
         std::cerr << "Received: " << data.GetDescriptor()->DebugString() << std::endl;
-        ASSERT_TRUE(data.ParseFromString(ptr->str));
     });
     socket.start();
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     proto::ModuleState ms;
+    auto hs = ms.add_handshakes();
+    hs->set_name("test");
     ai.write(ms);
+    while (!received);
+    ASSERT_TRUE(received);
     s.stop();
     t.join();
 }
 
 TEST(ServerTests, interface_test) {
     Server s{};
-    
+
     std::thread t{ run_server, &s };
     std::this_thread::sleep_for(std::chrono::seconds(1));
-    
+
     rtt::networking::PairReceiver<16970> ai{};
-    
-    ix::WebSocket socket{ };
+
+    ix::WebSocket socket{};
+    bool received = false;
     socket.setUrl("ws://localhost:16971/");
-    socket.setOnMessageCallback([&socket](ix::WebSocketMessagePtr const& ptr) {
-        std::cout << (int)ptr->type << std::endl;
-        if (ptr->type != ix::WebSocketMessageType::Message) {
+    socket.setOnMessageCallback([&socket, &received](ix::WebSocketMessagePtr const& msg) {
+        std::cout << "Message type " << (int)msg->type << std::endl;
+        if (msg->type != ix::WebSocketMessageType::Message) {
             // std::cout << ptr->errorInfo.decompressionError << "\n"
             //         << ptr->errorInfo.http_status << "\n"
             //         << ptr->errorInfo.reason << "\n"
@@ -65,7 +72,9 @@ TEST(ServerTests, interface_test) {
             return;
         }
         proto::ModuleState data;
-        std::cout << "Received: " << data.GetDescriptor()->DebugString() << std::endl;
+        ASSERT_TRUE(data.ParseFromString(msg->str));
+        received = true;
+        std::cerr << "Received: " << data.GetDescriptor()->DebugString() << std::endl;
         proto::UiSettings settings;
         proto::PossibleUiValue ui_value{};
         ui_value.set_allocated_text_value(new std::string{ "test123" });
@@ -74,12 +83,14 @@ TEST(ServerTests, interface_test) {
     });
     socket.start();
     proto::ModuleState ms;
-    ai.write(ms);
+    auto hs = ms.add_handshakes();
+    hs->set_name("test");
+    std::this_thread::sleep_for(std::chrono::seconds(1));
     ai.write(ms);
     // false because actually wait.
     auto result = ai.read_next<proto::UiSettings>(false);
     std::cout << "ok? " << result.is_ok() << std::endl;
-    // ASSERT_TRUE(result.is_ok());
+    ASSERT_TRUE(result.is_ok());
     s.stop();
     t.join();
 }
