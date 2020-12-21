@@ -7,6 +7,7 @@ import "messages_robocup_ssl_wrapper.proto";
 import "messages_robocup_ssl_referee.proto";
 import "messages_robocup_ssl_geometry.proto";
 import "Handshake.proto";
+import "UiOptions.proto";
 
 package proto;
 
@@ -23,6 +24,11 @@ message State {
 }
 
 message ModuleState {
+    State state = 1;
+    UiSettings ui_settings = 2;
+}
+
+message HandshakeState {
     State state = 1;
     repeated Handshake handshakes = 2;
 }
