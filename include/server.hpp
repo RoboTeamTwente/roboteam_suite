@@ -8,11 +8,11 @@
 #include <thread>
 #include <vector>
 
-#include "utils.hpp"
-#include "mutex.hpp"
-#include "interface.hpp"
+#include "central_utils.hpp"
 #include "connection.hpp"
+#include "interface.hpp"
 #include "modulehandler.hpp"
+#include "mutex.hpp"
 
 namespace rtt::central {
 
@@ -32,7 +32,7 @@ namespace rtt::central {
         // it's stored here, ModuleHandler basically backtracks it to this vector
         // this is why ModuleHandler takes an std::vector<proto::Handshake>* as
         // ctor argument
-        Mutex<std::vector<proto::Handshake>> module_handshakes; 
+        Mutex<std::vector<proto::Handshake>> module_handshakes;
 
 
         /**
@@ -49,7 +49,7 @@ namespace rtt::central {
         Mutex<stx::Option<proto::UiSettings>> current_settings;
 
         Server();
-        void handle_success_state_read(proto::ModuleState ok);
+        void handle_success_state_read(proto::State ok);
         void handle_roboteam_ai();
 
         void handle_interface(proto::UiSettings data);

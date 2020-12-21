@@ -15,9 +15,9 @@ namespace rtt::central {
                 ai->write(std::move(setting_message).unwrap());
             }
 
-            ai->read_next<proto::ModuleState>()
+            ai->read_next<proto::State>()
                 .match(
-                    [this](proto::ModuleState&& ok) { this->handle_success_state_read(ok); },
+                    [this](proto::State&& ok) { this->handle_success_state_read(ok); },
                     [](std::string&& err) { 
                         if (err.size()) {
                             std::cout << "Error packet received" << std::endl;
@@ -27,12 +27,17 @@ namespace rtt::central {
         }
     }
 
-    void Server::handle_success_state_read(proto::ModuleState ok) {
-        std::cout << "Ok packet received: " << ok.state().ball_camera_world().id() << std::endl;
+    void Server::handle_success_state_read(proto::State ok) {
+        std::cout << "Ok packet received: " << ok.ball_camera_world().id() << std::endl;
+        proto::ModuleState ms;
+        auto handshakes = module_handshakes.acquire();
+        for (auto const& each : *handshakes) {
+            *ms.add_handshakes() = each;
+        }
         // send it to the interface
-        roboteam_interface.acquire()->write(ok);
+        roboteam_interface.acquire()->write(ms);
         // forward this state to all modules.
-        modules.broadcast(ok);
+        modules.broadcast(ms);
     }
 
     void Server::handle_interface(proto::UiSettings data) {

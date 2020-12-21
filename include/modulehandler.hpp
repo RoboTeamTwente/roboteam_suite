@@ -1,5 +1,5 @@
-#ifndef __MODULE_HPP__
-#define __MODULE_HPP__
+#ifndef __MODULEHANDLER_HPP__
+#define __MODULEHANDLER_HPP__
 
 #include <roboteam_proto/Handshake.pb.h>
 

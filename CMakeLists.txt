@@ -24,9 +24,9 @@ target_include_directories(roboteam_central_server
         )
 
 add_executable(roboteam_central_server_tests
+        test/main.cpp
         src/server.cpp
         test/pair_test.cpp
-        test/main.cpp
         )
 
 target_include_directories(roboteam_central_server_tests
