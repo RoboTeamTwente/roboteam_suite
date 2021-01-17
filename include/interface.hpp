@@ -57,7 +57,6 @@ namespace rtt::central {
             std::string out;
             s.SerializeToString(&out);
             auto clients = server.getClients();
-            std::cout << out << std::endl;
             for (auto const& each : clients) {
                 each->sendBinary(out);
             }

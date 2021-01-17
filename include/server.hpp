@@ -49,7 +49,8 @@ namespace rtt::central {
         Mutex<stx::Option<proto::UiSettings>> current_settings;
 
         Server();
-        void handle_success_state_read(proto::State ok);
+
+        void handle_ai_state(proto::ModuleState ok);
         void handle_roboteam_ai();
 
         void handle_interface(proto::UiSettings data);

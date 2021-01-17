@@ -49,7 +49,7 @@ namespace rtt::central {
                             return;
                         }
                         // something else than a valid Handshake was received
-                        std::cout << err << std::endl;
+                        std::cout << "no valid handshake" <<err << std::endl;
                     }
                 );
                 std::this_thread::sleep_for(std::chrono::seconds(1));

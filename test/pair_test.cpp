@@ -24,6 +24,7 @@ TEST(ServerTests, websocket_test) {
         }
         proto::ModuleState data;
         ASSERT_TRUE(data.ParseFromString(msg->str));
+        ASSERT_TRUE(data.handshakes(0).name() == "test");
         received = true;
         std::cerr << "Received: Module State" << std::endl;
     });

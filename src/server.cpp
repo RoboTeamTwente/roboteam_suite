@@ -1,4 +1,5 @@
 #include "server.hpp"
+#include <roboteam_utils/Time.h>
 
 namespace rtt::central {
 
@@ -8,32 +9,35 @@ namespace rtt::central {
 
     void Server::handle_roboteam_ai() {
         // read incoming data and forward to modules.
+        Time last_interface_sent_time = Time::now() - Time(1.0);
         while (_run.load()) {
+            //TODO: don't spam AI with settings
             auto ai = roboteam_ai.acquire();
-            auto setting_message = current_settings.acquire()->clone();
-            if (setting_message.is_some()) {
-                ai->write(std::move(setting_message).unwrap());
+            Time now = Time::now(); //TODO: prevent spamming system calls
+            if (current_settings.acquire()->is_some() && now > last_interface_sent_time + Time(1.0)) {
+              last_interface_sent_time = now;
+              auto setting_message = current_settings.acquire()->clone();
+              ai->write(std::move(setting_message).unwrap());
             }
 
-            ai->read_next<proto::State>()
+            ai->read_next<proto::ModuleState>()
                 .match(
-                    [this](proto::State&& ok) { this->handle_success_state_read(ok); },
-                    [](std::string&& err) { 
+                    [this](proto::ModuleState&& ok) { this->handle_ai_state(ok); },
+                    [](std::string&& err) {
                         if (err.size()) {
-                            std::cout << "Error packet received" << std::endl;
+                            std::cout << "Error packet received: " << std::endl;
                             std::cout << err << std::endl;
                      } });
-            // std::this_thread::sleep_for(std::chrono::seconds(1));
         }
     }
 
-    void Server::handle_success_state_read(proto::State ok) {
-        std::cout << "Ok packet received: " << ok.ball_camera_world().id() << std::endl;
-        proto::ModuleState ms;
-        auto handshakes = module_handshakes.acquire();
-        for (auto const& each : *handshakes) {
-            *ms.add_handshakes() = each;
-        }
+
+    void Server::handle_ai_state(proto::ModuleState ok) {
+      proto::ModuleState ms;
+      auto handshakes = module_handshakes.acquire();
+      for (auto const& each : *handshakes) {
+        *ms.add_handshakes() = each;
+      }
         // send it to the interface
         roboteam_interface.acquire()->write(ms);
         // forward this state to all modules.
@@ -41,7 +45,9 @@ namespace rtt::central {
     }
 
     void Server::handle_interface(proto::UiSettings data) {
-        *this->current_settings.acquire() = stx::Some(std::move(data));
+
+      *this->current_settings.acquire() = stx::Some(std::move(data));
+        //TODO: if settingschanged or every 0.5 seconds, send settings to AI
     }
 
     void Server::handle_modules() {
