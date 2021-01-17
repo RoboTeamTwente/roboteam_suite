@@ -33,15 +33,17 @@ namespace rtt::central {
 
 
     void Server::handle_ai_state(proto::ModuleState ok) {
-      proto::ModuleState ms;
-      auto handshakes = module_handshakes.acquire();
-      for (auto const& each : *handshakes) {
-        *ms.add_handshakes() = each;
-      }
-        // send it to the interface
-        roboteam_interface.acquire()->write(ms);
-        // forward this state to all modules.
-        modules.broadcast(ms);
+      std::cout<<"AI callback" <<std::endl;
+      ok.PrintDebugString();
+      //TODO: send state to interface and modules
+//      auto handshakes = module_handshakes.acquire();
+//      for (auto const& each : *handshakes) {
+//        *ok.add_handshakes() = each;
+//      }
+//        // send it to the interface
+//        roboteam_interface.acquire()->write(ok);
+//        // forward this state to all modules.
+//        modules.broadcast(ok);
     }
 
     void Server::handle_interface(proto::UiSettings data) {
