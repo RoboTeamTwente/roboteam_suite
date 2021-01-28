@@ -23,12 +23,15 @@ message State {
     repeated SSL_Referee processed_referee_packets = 11;
 }
 
-message ModuleState {
+message SystemState{
     State state = 1;
     UiSettings ui_settings = 2;
 }
 
 message HandshakeState {
     State state = 1;
+}
+message ModuleState {
+    SystemState system_state = 1;
     repeated Handshake handshakes = 2;
 }
