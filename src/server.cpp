@@ -33,8 +33,6 @@ namespace rtt::central {
 
 
     void Server::handle_ai_state(proto::ModuleState ok) {
-      std::cout<<"AI callback" <<std::endl;
-      ok.PrintDebugString();
       //TODO: send state to interface and modules
 //      auto handshakes = module_handshakes.acquire();
 //      for (auto const& each : *handshakes) {
