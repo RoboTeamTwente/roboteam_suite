@@ -41,7 +41,7 @@ namespace rtt::central {
         // send it to the interface
         roboteam_interface.acquire()->write(ok);
         // forward this state to all modules.
-        //modules.broadcast(ok);
+        //modules.broadcast(ok); //TODO: This call locks/blocks for some reason?
     }
 
     void Server::handle_interface(proto::UiSettings data) {
