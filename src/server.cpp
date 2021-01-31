@@ -34,14 +34,14 @@ namespace rtt::central {
 
     void Server::handle_ai_state(proto::ModuleState ok) {
       //TODO: send state to interface and modules
-//      auto handshakes = module_handshakes.acquire();
-//      for (auto const& each : *handshakes) {
-//        *ok.add_handshakes() = each;
-//      }
-//        // send it to the interface
-//        roboteam_interface.acquire()->write(ok);
-//        // forward this state to all modules.
-//        modules.broadcast(ok);
+      auto handshakes = module_handshakes.acquire();
+      for (auto const& each : *handshakes) {
+        *ok.add_handshakes() = each;
+      }
+        // send it to the interface
+        roboteam_interface.acquire()->write(ok);
+        // forward this state to all modules.
+        //modules.broadcast(ok);
     }
 
     void Server::handle_interface(proto::UiSettings data) {
