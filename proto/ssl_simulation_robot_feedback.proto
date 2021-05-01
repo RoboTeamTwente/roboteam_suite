@@ -1,8 +1,8 @@
 syntax = "proto2";
-option go_package = "github.com/RoboCup-SSL/ssl-simulation-protocol/pkg/sim";
 
 import "ssl_simulation_error.proto";
 import "google/protobuf/any.proto";
+package proto.sim;
 
 // Feedback from a robot
 message RobotFeedback {

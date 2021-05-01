@@ -1,10 +1,10 @@
 syntax = "proto2";
-option go_package = "github.com/RoboCup-SSL/ssl-simulation-protocol/pkg/sim";
 
-import "ssl_gc_common.proto";
-import "ssl_vision_geometry.proto";
+import "messages_robocup_ssl_game_controller_common.proto";
+import "messages_robocup_ssl_geometry.proto";
 import "google/protobuf/any.proto";
 
+package proto.sim;
 // Movement limits for a robot
 message RobotLimits {
     // Max absolute speed-up acceleration [m/s^2]
