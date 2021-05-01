@@ -1,3 +1,0 @@
-[submodule "proto/ssl-simulation-protocol"]
-	path = proto/ssl-simulation-protocol
-	url = git@github.com:RoboCup-SSL/ssl-simulation-protocol.git
