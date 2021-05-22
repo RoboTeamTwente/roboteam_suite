@@ -49,6 +49,17 @@ protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS
         # New interface
         ${PROTO_BASE_PATH}/UiOptions.proto
         ${PROTO_BASE_PATH}/Handshake.proto
+
+        # SSL Simulation Protocol - Robocup 2021
+        ${PROTO_BASE_PATH}/ssl_gc_common.proto
+        ${PROTO_BASE_PATH}/ssl_simulation_config.proto
+        ${PROTO_BASE_PATH}/ssl_simulation_control.proto
+        ${PROTO_BASE_PATH}/ssl_simulation_error.proto
+        ${PROTO_BASE_PATH}/ssl_simulation_robot_control.proto
+        ${PROTO_BASE_PATH}/ssl_simulation_robot_feedback.proto
+        ${PROTO_BASE_PATH}/ssl_simulation_synchronous.proto
+        ${PROTO_BASE_PATH}/ssl_vision_detection.proto
+        ${PROTO_BASE_PATH}/ssl_vision_geometry.proto
         )
 
 add_library(roboteam_proto STATIC
