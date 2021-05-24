@@ -63,7 +63,14 @@ RUN /bin/bash -c "git clone https://github.com/google/googletest.git /opt/google
 RUN /bin/bash -c "git clone https://github.com/RoboTeamTwente/roboteam_suite /opt/roboteam/roboteam_suite --recursive --branch=robocup/2021"
 
 RUN /bin/bash -c "cd /opt/roboteam/roboteam_suite &&\ 
-    ls \
+    mkdir build &&\
+    cd build &&\
+    cmake .. -DCMAKE_BUILD_TYPE=Release -G \"CodeBlocks - Ninja\" -DCMAKE_CXX_COMPILER=/usr/bin/clang++ -DCMAKE_CC_COMPILER=/usr/bin/clang &&\
+    cmake --build . --target project_zmqpp \
+    "
+
+RUN /bin/bash -c "cd /opt/roboteam/roboteam_suite/build &&\
+    cmake --build . -- -j $(nproc) \
     "
 
 # Copy over the run.sh

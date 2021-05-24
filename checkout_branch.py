@@ -17,7 +17,7 @@ def checkout_main_repos_branch(branch: str):
         "roboteam_robothub",
         "roboteam_utils",
         "roboteam_world",
-        "roboteam_central_server"
+        # "roboteam_central_server"
     ]
     for each in main_repos:
         checkout_repo_branch(each, branch)
