@@ -60,7 +60,7 @@ RUN /bin/bash -c "git clone https://github.com/google/googletest.git /opt/google
     make install"
 
 # Clone the repos and 
-RUN /bin/bash -c "git clone https://github.com/RoboTeamTwente/roboteam_suite /opt/roboteam/roboteam_suite --recursive --branch=robocup/2021"
+RUN /bin/bash -c "git clone https://github.com/RoboTeamTwente/roboteam_suite /opt/roboteam/roboteam_suite --recurse-submodules --branch=robocup/2021"
 
 RUN /bin/bash -c "cd /opt/roboteam/roboteam_suite &&\ 
     mkdir build &&\
@@ -74,6 +74,6 @@ RUN /bin/bash -c "cd /opt/roboteam/roboteam_suite/build &&\
     "
 
 # Copy over the run.sh
-COPY run.sh /runs.sh
+COPY run.sh /run.sh
 
-ENTRYPOINT [ "/run.sh" ]
+# ENTRYPOINT [ "/run.sh" ]
