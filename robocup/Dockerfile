@@ -74,6 +74,6 @@ RUN /bin/bash -c "cd /opt/roboteam/roboteam_suite/build &&\
     "
 
 # Copy over the run.sh
-COPY run.sh /run.sh
+COPY ./robocup/run.sh /run.sh
 
-# ENTRYPOINT [ "/run.sh" ]
+ENTRYPOINT [ "/run.sh" ]
