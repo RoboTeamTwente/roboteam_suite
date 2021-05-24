@@ -70,7 +70,7 @@ RUN /bin/bash -c "cd /opt/roboteam/roboteam_suite &&\
     "
 
 RUN /bin/bash -c "cd /opt/roboteam/roboteam_suite/build &&\
-    cmake --build . -- -j $(nproc) \
+    cmake --build . --target roboteam_ai -- -j $(nproc) \
     "
 
 # Copy over the run.sh
