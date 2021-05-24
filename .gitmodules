@@ -21,10 +21,6 @@
 [submodule "thirdparty/stx"]
 	path = thirdparty/stx
 	url = https://github.com/lamarrr/STX.git
-[submodule "roboteam_central_server"]
-	path = roboteam_central_server
-	url = https://github.com/RoboTeamTwente/roboteam_central_server
-	branch = development
 [submodule "thirdparty/IXWebSocket"]
 	path = thirdparty/IXWebSocket
 	url = https://github.com/machinezone/IXWebSocket.git
