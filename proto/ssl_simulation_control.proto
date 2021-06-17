@@ -1,9 +1,9 @@
 syntax = "proto2";
-option go_package = "github.com/RoboCup-SSL/ssl-simulation-protocol/pkg/sim";
 
-import "ssl_gc_common.proto";
+import "messages_robocup_ssl_game_controller_common.proto";
 import "ssl_simulation_config.proto";
 import "ssl_simulation_error.proto";
+package proto.sim;
 
 // Teleport the ball to a new location and optionally set it to some velocity
 message TeleportBall {

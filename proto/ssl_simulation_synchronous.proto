@@ -1,10 +1,11 @@
 syntax = "proto2";
-option go_package = "github.com/RoboCup-SSL/ssl-simulation-protocol/pkg/sim";
 
-import "ssl_vision_detection.proto";
+import "messages_robocup_ssl_detection.proto";
 import "ssl_simulation_robot_feedback.proto";
 import "ssl_simulation_robot_control.proto";
 import "ssl_simulation_control.proto";
+
+package proto.sim;
 
 // Request from the team to the simulator
 message SimulationSyncRequest {

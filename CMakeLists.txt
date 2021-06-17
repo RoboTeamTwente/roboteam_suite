@@ -50,6 +50,7 @@ protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS
         ${PROTO_BASE_PATH}/UiOptions.proto
         ${PROTO_BASE_PATH}/Handshake.proto
 
+
         # SSL Simulation Protocol - Robocup 2021
         ${PROTO_BASE_PATH}/ssl_gc_common.proto
         ${PROTO_BASE_PATH}/ssl_simulation_config.proto
