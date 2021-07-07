@@ -17,6 +17,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 
 include(cmake_modules/BuildSodium.cmake)
 include(cmake_modules/BuildZeroMQ.cmake)
+include(cmake_modules/BuildLibusb.cmake)
 
 # external libraries
 # stx
