@@ -8,7 +8,7 @@ add_executable(roboteam_central_server
 
 target_link_libraries(roboteam_central_server
         PRIVATE stx
-        PRIVATE networking
+        PRIVATE roboteam_utils
         PRIVATE ixwebsocket
         PRIVATE roboteam_proto
         PRIVATE roboteam_utils
@@ -31,7 +31,7 @@ target_include_directories(roboteam_central_server_tests
 target_link_libraries(roboteam_central_server_tests        
         PUBLIC stx
         PUBLIC gtest
-        PUBLIC networking
+        PUBLIC roboteam_utils
         PUBLIC ixwebsocket
         PUBLIC roboteam_proto
         PUBLIC roboteam_utils
