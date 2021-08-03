@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.16)
 project(roboteam_central_server VERSION 0.1.0)
 
 add_executable(roboteam_central_server 
@@ -6,21 +6,16 @@ add_executable(roboteam_central_server
         src/server.cpp
         )
 
-set_target_properties(roboteam_central_server PROPERTIES
-        CMAKE_CXX_STANDARD 20
-        CMAKE_CXX_STANDARD_REQUIRED 1
-        )
-
 target_link_libraries(roboteam_central_server
-        PUBLIC stx
-        PUBLIC networking
-        PUBLIC ixwebsocket
-        PUBLIC roboteam_proto
-        PUBLIC roboteam_utils
+        PRIVATE stx
+        PRIVATE roboteam_utils
+        PRIVATE ixwebsocket
+        PRIVATE roboteam_proto
+        PRIVATE roboteam_utils
         )
 
 target_include_directories(roboteam_central_server
-        PUBLIC ./include
+        PRIVATE include/
         )
 
 add_executable(roboteam_central_server_tests
@@ -36,7 +31,7 @@ target_include_directories(roboteam_central_server_tests
 target_link_libraries(roboteam_central_server_tests        
         PUBLIC stx
         PUBLIC gtest
-        PUBLIC networking
+        PUBLIC roboteam_utils
         PUBLIC ixwebsocket
         PUBLIC roboteam_proto
         PUBLIC roboteam_utils
