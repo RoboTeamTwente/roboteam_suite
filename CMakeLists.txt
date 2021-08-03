@@ -1,3 +1,5 @@
+cmake_minimum_required(VERSION 3.16)
+
 set(PROTO_BASE_PATH proto)
 
 find_package(Protobuf 3.9.1 REQUIRED)
@@ -78,3 +80,5 @@ target_include_directories(roboteam_proto
         # This points to cmake-build-debug/proto/include/proto
         PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/..
         )
+
+set_target_properties(roboteam_proto PROPERTIES UNITY_BUILD FALSE)
