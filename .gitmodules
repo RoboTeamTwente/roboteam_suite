@@ -22,3 +22,6 @@
 	path = roboteam_central_server
 	url = https://github.com/RoboTeamTwente/roboteam_central_server
 	branch = development
+[submodule "roboteam_interface"]
+	path = roboteam_interface
+	url = https://github.com/RoboTeamTwente/roboteam_interface
