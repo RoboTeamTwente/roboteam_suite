@@ -23,9 +23,14 @@ FetchContent_Declare(proj_ixwebsocket
         GIT_TAG master
         )
 
+FetchContent_Declare(proj_json
+        GIT_REPOSITORY https://github.com/ArthurSonzogni/nlohmann_json_cmake_fetchcontent
+        GIT_TAG v3.9.1)
+
+
 #set(STX_BUILD_SHARED TRUE)
 
-FetchContent_MakeAvailable(proj_libzmqpp proj_sdl2 proj_stx proj_ixwebsocket)
+FetchContent_MakeAvailable(proj_libzmqpp proj_sdl2 proj_stx proj_ixwebsocket proj_json)
 
 target_include_directories(zmqpp INTERFACE ${proj_libzmqpp_SOURCE_DIR}/src)
 
