@@ -1,0 +1,37 @@
+syntax = "proto3";
+package proto;
+message mimir_robotcommand {
+    uint32 id = 1;
+    bool teamIsYellow = 2;
+    Kicker kicker = 3;
+    oneof control {
+        Wheels wheels = 4;
+        robotVelocity robotVel = 5;
+        globalVelocity globalVel = 6;
+    }
+    float dribblerSpeed = 7;
+}
+
+message Wheels {
+    float wheel1 = 1;
+    float wheel2 = 2;
+    float wheel3 = 3;
+    float wheel4 = 4;
+}
+message robotVelocity {
+    float veltangent = 1;
+    float velnormal = 2;
+    float velangle = 3;
+}
+message globalVelocity {
+    float velx = 1;
+    float vely = 2;
+    oneof angleControl {
+        float angleVel = 3;
+        float angle = 4;
+    }
+}
+message Kicker {
+    bool chip = 1;
+    float kickChipPower = 2;
+}
