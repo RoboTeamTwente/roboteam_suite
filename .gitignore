@@ -1,6 +1,0 @@
-# Vim temporaries
-*.swp
-*~
-
-.idea
-cmake-build-debug
