@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+import "WorldBall.proto";
+import "WorldRobot.proto";
+
+package proto;
+
+message World {
+    uint64 time = 1;
+    uint32 id = 2;
+    WorldBall ball = 3;
+    repeated WorldRobot yellow = 4;
+    repeated WorldRobot blue = 5;
+}
