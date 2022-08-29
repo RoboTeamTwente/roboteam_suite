@@ -1,0 +1,47 @@
+FROM ubuntu:20.04
+
+LABEL "maintainer"="RoboteamTwente" "email"="roboteamtwente@gmail.com"
+
+# To make sure installing does not ask questions
+ARG DEBIAN_FRONTEND=noninteractive
+
+# Update lists
+RUN /bin/bash -c "apt-get update -y; apt-get upgrade -y"
+
+# Install package dependencies
+RUN /bin/bash -c "apt-get -y install \
+    git \
+    cmake \
+    g++ \
+    qt5-default \
+    libqt5charts5-dev \
+    libsdl2-dev \
+    libzmq3-dev \
+    libeigen3-dev \
+    libgtest-dev"
+
+# git           For managing project cooperation and history
+# cmake         For configuring our project
+# g++           For compiling c++
+# qt5-default   For the old AI interface
+# libqt5charts5-dev For displaying graphs in the old AI interface
+# libsdl2-dev   For connecting the joystick
+# libzmq3-dev   For handling network messages
+# libeigen3-dev Utility maths for Observer
+# libgtest-dev  For testing
+
+# Setup protobuf for serializing messages
+RUN /bin/bash -c "\
+    apt-get -y install libtool \
+    apt-get -y install autoconf \
+    \
+    git clone https://github.com/protocolbuffers/protobuf.git /opt/protobuf &&\
+    cd /opt/protobuf &&\
+    git checkout 3.19.x &&\
+    git submodule update --init --recursive &&\
+    ./autogen.sh &&\
+    ./configure &&\
+    make -j $(nproc)&&\
+    make install &&\
+    ldconfig"
+
