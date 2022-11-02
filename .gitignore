@@ -4,3 +4,4 @@ cmake-build-release/
 build/
 /.vscode
 .cache/
+compile_commands.json
